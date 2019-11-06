@@ -1,7 +1,7 @@
 #include <iostream>
 #include <time.h>
 #include <vector>
-#include "search.cpp"
+#include "search_cleaned.cpp"
 using namespace std;
 
 int main(){
@@ -15,10 +15,11 @@ int main(){
   lld x,y,p,q,i,j,k;
 
   intialize_board();
-  State *st = new State(player_id,Board);
+  State *st = new State(Board);
 //  st->getBoardS();
 
   if(player_id == 1){
+  //BLACK
   while(1){
 
 /*SEARCH*/
