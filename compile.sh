@@ -1,1 +1,1 @@
-g++ -O3 game.cpp -o Xannon
+g++ -O3 game.cpp -o bot

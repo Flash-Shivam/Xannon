@@ -89,6 +89,8 @@ class Game:
 		return valid_targets
 
 	def calculate_score(self, tA, tB, sA, sB, error_state):
+		scoreA=0;
+		scoreB=0;
 		if(error_state == '1'):
 			tB = 2
 		elif(error_state == '2'):

@@ -1,3 +1,6 @@
+// Found a possible error fix calling moves again which updates Moves array
+//could be a possible reason for attack count not beind taken into account
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -10,20 +13,20 @@ using namespace std;
 
 //const int m=8,n=8;
 //vector<vector<int> > RealBoard;
-int DEPTH=3;
-int PLAYER_ID;		//1 ->black and 2 -> white
+int DEPTH=1;
+int PLAYER_ID;		//1 ->black and 2 -> white	: Fixed for a game
 /*Weights*/
 int w_townhall_w =500;
 int w_townhall_b =-500;
 int w_soldier_w  =90;
-int w_soldier_b  =-95;
-int w_cannon_w	 =15;
-int w_cannon_b	 =-15;
+int w_soldier_b  =-90;
+int w_cannon_w	 =1;
+int w_cannon_b	 =-1;
 
-int w_TcountW 	 =-1;
-int w_TcountB 	 =1;
-int w_ScountW 	 =-1;
-int w_ScountB 	 =1;
+int w_TcountW 	 =-10;
+int w_TcountB 	 =10;
+int w_ScountW 	 =-10;
+int w_ScountB 	 =10;
 
 /*
 	  -------(m)------>
@@ -39,7 +42,9 @@ int w_ScountB 	 =1;
 /*Ideas
 	MutliThreading calculate best move for every next opponent move then play
 	Better huristic and evaluation functions
+	Better ordering for better pruning
 	more depth
+	Check out TA bots
 */
 
 /*---------------Helper Functions---------------*/
@@ -54,15 +59,15 @@ int w_ScountB 	 =1;
 /**/
 class State{
 	int m=8,n=8;					//	2-Black-Negative // 1-White-Positive
-	int score=0,id=1;				//	score of board /if no search done then equal to utility
+	int score=0;				//	score of board /if no search done then equal to utility
 	vector<vector<int> > board;
 	vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > Moves;
 	int moveToPlay =0;
-	int whosMoves = 1; 				//	1 get white move and 2 to get black move
+//	int whosMoves = 1; 				//	1 get white move and 2 to get black move
 	
 	/*
-		id == whosMoves  Opponent
-		id !- whosMoves  your moves
+		PLAYER_ID == whosMoves  Opponent
+		PLAYER_ID !- whosMoves  your moves
 	*/
 	
 	/*Statistics for evaluation function*/
@@ -85,14 +90,13 @@ class State{
 	/*--END Statistics for evaluation function*/
 	
 	//Constructor
-	public: State(int ID,vector<vector<int> > bored){
+	public: State(vector<vector<int> > bored){
 		m=getM();
 		n=getN();
 		board.resize(n);
 		for(int i=0;i<n;i++)	board[i].resize(m);
 		board = bored;
 		//getBoardS();
-		id= ID;
 
 	}
 
@@ -103,8 +107,7 @@ class State{
 		board.resize(n);
 		for(int i=0;i<n;i++)	board[i].resize(m);
 		board = st->board;
-		id = st->id;
-		whosMoves = 3-st->whosMoves;	//invert whose move
+//		whosMoves = 3-st->whosMoves;	//invert whose move
 	}
 	/*--Utility calculating functions--*/
 	//Think how to layout the board and different sides in numbers##
@@ -152,6 +155,10 @@ class State{
 			cerr<<endl<<endl;
 		}
 	}
+	
+	void printMove(tuple<char,pair <int,int> ,pair <int,int> > move){
+		cerr<<get<0>(move)<<" "<<get<1>(move).first<<" "<<get<1>(move).second<<" => "<<get<2>(move).first<<" "<<get<2>(move).second<<endl;
+	}
 	/*END Printing and Visualizatin Functions*/
 	
 	//cannon count
@@ -160,7 +167,7 @@ class State{
 		cannon_w=0;
 		//Horizontal cannons
 		for(int i=0;i<n;i++){
-			for(int j=0;i<j-2;j++){
+			for(int j=0;j<m-2;j++){
 				if(board[i][j]==1&&board[i][j+1]==1&&board[i][j+2]==1)	//horizontal cannon found
 					cannon_w++;
 				else if(board[i][j]==-1&&board[i][j+1]==-1&&board[i][j+2]==-1)
@@ -199,7 +206,9 @@ class State{
 
 	//no of black soliders in attacking range
 	void blackUnderAttack(){
-		validMoves(1);	//moves of white
+	//###Might Over write !!!!
+		vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > Moves;
+		Moves =validMovesR(2);	//moves of white
 		TcountB=0;
 		ScountB=0;
 		for(int i=0;i<Moves.size();i++){
@@ -209,9 +218,11 @@ class State{
 				TcountB++;
 		}
 	}
-	//no of black soliders in attacking range
+	//no of white soliders in attacking range
 	void whiteUnderAttack(){
-		validMoves(2);	//moves of black
+	
+		vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > Moves;
+		Moves =validMovesR(1);	//moves of black
 		TcountW=0;
 		ScountW=0;
 		for(int i=0;i<Moves.size();i++){
@@ -248,15 +259,22 @@ class State{
 		getCannonCount();
 		blackUnderAttack();
 		whiteUnderAttack();
+		
 
 		util += w_townhall_w*townhall_w	+ 	w_townhall_b*townhall_b;
+//		cerr<<"Util TC: "<<util<<endl;
 		util += w_soldier_w*soldier_w	+	w_soldier_b*soldier_b;
+//		cerr<<"Util BC: "<<util<<endl;
 		util += w_cannon_w*cannon_w		+	w_cannon_b*cannon_b;
+//		cerr<<"Util CC: "<<util<<endl;
 		util += w_TcountW*TcountW		+	w_TcountB*TcountB;
 		util += w_ScountW*ScountW		+	w_ScountB*ScountB;
+//		cerr<<"TcountW: "<<TcountW<<" TcountB: "<<TcountB<<endl;
+//		cerr<<"ScountW: "<<ScountW<<" ScountB: "<<ScountB<<endl;
+		cerr<<"Util AC: "<<util<<endl;
 		//closeness to other townhalls
 	//	util += sum()/10;	//to get closeness to other townhalls
- 		if(id=1)
+ 		if(PLAYER_ID==1)
  			util = -util;
 		score = util;
 		return util;
@@ -268,16 +286,27 @@ class State{
 	//Just gives board position if current move played
 	void move(tuple<char,pair <int,int> ,pair <int,int> > move,int turn){
 		//printBoard();
-		//cerr<<"id fiven: "<<turn<<endl;
-		board = update(board,move,turn);
+		//cerr<<"PLAYER_ID fiven: "<<turn<<endl;
+		board = update(board,move,3-turn);	//in player.cpp
 	}
+	
+	//Primary method to get validMoves
 	void validMoves(int turn){
-		Moves= getValidMoves(board,turn);	//in player.cpp
+		Moves= getValidMoves(board,3-turn);	//in player.cpp
 		//removeBlank();	//remove blank cannon shots
-		clean();		//remove repetitive bomb shots/
+		clean(Moves);		//remove repetitive bomb shots/
 	}
+	
+	//Secondary method to get validMoves
+	 vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > validMovesR(int turn){
+		vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > Moves= getValidMoves(board,3-turn);	//in player.cpp
+		//removeBlank();	//remove blank cannon shots
+		clean(Moves);		//remove repetitive bomb shots/
+		return Moves;
+	}
+	
 	//removes duplicate cannon shot moves and arranges bomb shots before
-	void clean(){
+	void clean(vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > Moves){
 		for(int i=0;i<Moves.size();i++){
 			if(get<0>(Moves[i])=='M')
 				continue;
@@ -319,20 +348,23 @@ class State{
 
 	//return all the board positions after one ply
 	vector<State*> Successors(int turn){
-		turn = 3-turn;
+
 		validMoves(turn);
+		cerr<<"tu: "<<turn<<endl;
 		//cerr<<"turhin: "<<turn<<endl;
 		vector<State*> children(Moves.size());
 //		cerr<<"MoveSize: "<<Moves.size()<<endl;
 		for(int i=0;i<Moves.size();i++){
-			children[i] = new State(id,board);	//#check once: copy constructor working?
+			children[i] = new State(board);	//#check once: copy constructor working?
 			children[i]->copy(this);//problem in copy
 			//printBoard();
 			children[i]->move(Moves[i],turn);
 //			cerr<<"a\n";
-//		 	children[i]->printBoard();
-//			cerr<<"Utility of "<<i<<" move "<<children[i]->utility()<<endl;
-	//		cerr<<"Cannon counts Black"<<children[i]->cannon_b<<" White "<<children[i]->cannon_w<<endl;
+		 	children[i]->printBoard();
+		 	
+		 	//Move and Utility
+			cerr<<"Utility of "<<i<<"th move is "<<children[i]->utility()<<endl;
+//			printMove(Moves[i]);
 			//printBoard();
 		//	cerr<<"-------------------------------------------"<<endl;
 		}
@@ -344,7 +376,7 @@ class State{
 	}
 };
 
-/*----------END Class Def; BEGIN MINIMAX----------*/
+/*--------------------------------------------------END Class Def; BEGIN MINIMAX--------------------------------------------------*/
 
 
 /*--Function Prototypes--*/
@@ -364,10 +396,10 @@ int MiniMax(State *state, int depth){
 
 	//set depth based on number of moves
 
-	if(children.size()>50) DEPTH = 3;
-	else if(children.size()>10) DEPTH = 4;
-	if(children.size()<=10) DEPTH = 5;
-	if(children.size()<3)  DEPTH = 6;
+//	if(children.size()>50) depth = 2;
+//	else if(children.size()>10) depth = 4;
+//	if(children.size()<=10) depth = 5;
+//	if(children.size()<3)  depth = 6;
 
 	if(depth <=0){	//Random Player
 		srand(time(NULL));

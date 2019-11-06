@@ -1,1 +1,1 @@
-./Xannon
+./bot
