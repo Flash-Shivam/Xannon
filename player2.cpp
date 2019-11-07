@@ -14,10 +14,13 @@ vector <pair <lld,lld> >  cannon_movement(lld player_number,lld soldier_selected
 /*END Funciton prototypes*/
 void intialize_board(){
   lld i,j,k;
-	Board.resize(8);
-	for(int i=0;i<8;i++)
-		Board[i].resize(10);
+  // cerr << "Inside Function\n";
+	Board.resize(10);
+	for(int i=0;i<10;i++)
+		Board[i].resize(8);
 
+
+    // cerr << "Board Sized\n";
   for(k=0;k<4;k++)
   {
 
@@ -111,10 +114,10 @@ vector<vector<int> > getBoard(){
 }
 
 int getM(){
-	return 10;
+	return 8;
 }
 int getN(){
-	return 8;
+	return 10;
 }
 // player_number = 1 if A player
 // selects a random player among all the valid soldiers
