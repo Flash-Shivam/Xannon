@@ -13,11 +13,11 @@ using namespace std;
 
 //const int m=8,n=8;
 //vector<vector<int> > RealBoard;
-int DEPTH=1;
+int DEPTH=3;
 int PLAYER_ID;		//1 ->black and 2 -> white	: Fixed for a game
 /*Weights*/
-int w_townhall_w =500;
-int w_townhall_b =-500;
+int w_townhall_w =200;
+int w_townhall_b =-200;
 int w_soldier_w  =90;
 int w_soldier_b  =-90;
 int w_cannon_w	 =1;
@@ -271,7 +271,7 @@ class State{
 		util += w_ScountW*ScountW		+	w_ScountB*ScountB;
 //		cerr<<"TcountW: "<<TcountW<<" TcountB: "<<TcountB<<endl;
 //		cerr<<"ScountW: "<<ScountW<<" ScountB: "<<ScountB<<endl;
-		cerr<<"Util AC: "<<util<<endl;
+//		cerr<<"Util AC: "<<util<<endl;
 		//closeness to other townhalls
 	//	util += sum()/10;	//to get closeness to other townhalls
  		if(PLAYER_ID==1)
@@ -360,10 +360,10 @@ class State{
 			//printBoard();
 			children[i]->move(Moves[i],turn);
 //			cerr<<"a\n";
-		 	children[i]->printBoard();
+//		 	children[i]->printBoard();
 		 	
 		 	//Move and Utility
-			cerr<<"Utility of "<<i<<"th move is "<<children[i]->utility()<<endl;
+//			cerr<<"Utility of "<<i<<"th move is "<<children[i]->utility()<<endl;
 //			printMove(Moves[i]);
 			//printBoard();
 		//	cerr<<"-------------------------------------------"<<endl;
@@ -429,7 +429,7 @@ int MiniMax(State *state, int depth){
 	
 	//## Can Update weights here
 //	cerr<<"Max update"<<max_value<<" Index: "<<max_index<<"Utility: "<<children[max]->utility()<<endl;/
-//	chilren[]printBoard();
+//	chidlren[max_index]->printBoard();
 
 	return max_index;
 }
