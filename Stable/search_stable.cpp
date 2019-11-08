@@ -5,28 +5,46 @@
 #include <vector>
 #include <algorithm>
 #include <utility>
-#include<string>
+#include <string>
 #include"player.cpp"
 
-int RED =1;	//Developer Option: check by reducing number of branches
 using namespace std;
 
-//const int m=8,n=8;
-//vector<vector<int> > RealBoard;
+//--Manual Options and Developer Options
+int RED =1;	//Developer Option: check by reducing number of branches
+bool DYNAMIC_DEPTH = true;	//Depth static or Dynamic
+bool LEARN = false;			//learn mode
 int DEPTH=3;
-int PLAYER_ID;		//1 ->black and 2 -> white	: Fixed for a game
-/*Weights*/
-int w_townhall_w =200;
-int w_townhall_b =-200;
-int w_soldier_w  =90;
-int w_soldier_b  =-90;
-int w_cannon_w	 =1;
-int w_cannon_b	 =-1;
 
-int w_TcountW 	 =-10;
-int w_TcountB 	 =10;
-int w_ScountW 	 =-10;
-int w_ScountB 	 =10;
+//vector<vector<int> > RealBoard;
+//const int m=8,n=8;
+int PLAYER_ID;		//1 ->black and 2 -> white	: Fixed for a game
+int RATE = 1;		//Learning rate
+
+/*Weights*/
+int w_townhall_w =200;		//200
+int w_townhall_b =-200;		//-200
+int w_soldier_w  =90;		//90
+int w_soldier_b  =-90;		//-90
+int w_cannon_w	 =1;		//1
+int w_cannon_b	 =-1;		//-1
+
+int w_TcountW 	 =-10;		//-10
+int w_TcountB 	 =10;		//10
+int w_ScountW 	 =-10;		//-10
+int w_ScountB 	 =10;		//10
+
+int l_townhall_w =923;		//200
+int l_townhall_b =-923;		//-200
+int l_soldier_w  =713;		//90
+int l_soldier_b  =-713;		//-90
+int l_cannon_w	 =1;		//1
+int l_cannon_b	 =-1;		//-1
+
+int l_TcountW 	 =-613;		//-10
+int l_TcountB 	 =613;		//10
+int l_ScountW 	 =-613;		//-10
+int l_ScountB 	 =613;		//10
 
 /*
 	  -------(m)------>
@@ -45,6 +63,7 @@ int w_ScountB 	 =10;
 	Better ordering for better pruning
 	more depth
 	Check out TA bots
+	Update weights after computation of utility form lowe depths
 */
 
 /*---------------Helper Functions---------------*/
@@ -155,8 +174,17 @@ class State{
 			cerr<<endl<<endl;
 		}
 	}
+	//To print outside board
+	void printBoard(vector<vector<int> > board){
+		for(int i=0;i<n;i++){
+			for(int j=0;j<m;j++)
+				cerr<<representation(board[i][j],i,j)<<"	";
+			cerr<<endl<<endl;
+		}
+	}
 	
-	void printMove(tuple<char,pair <int,int> ,pair <int,int> > move){
+	void printMove(int index){
+		tuple<char,pair <int,int> ,pair <int,int> > move = Moves[index];
 		cerr<<get<0>(move)<<" "<<get<1>(move).first<<" "<<get<1>(move).second<<" => "<<get<2>(move).first<<" "<<get<2>(move).second<<endl;
 	}
 	/*END Printing and Visualizatin Functions*/
@@ -342,7 +370,8 @@ class State{
 	}
 	
 	//Play function: Actually plays the move and updates board
-	tuple <char,pair <lld,lld>,pair <lld,lld > >  play(){
+	tuple <char,pair <lld,lld>,pair <lld,lld > >  play(int i){
+		moveToPlay=i;
 		return Moves[moveToPlay];	//update in player.cpp
 	}
 
@@ -350,7 +379,6 @@ class State{
 	vector<State*> Successors(int turn){
 
 		validMoves(turn);
-		cerr<<"tu: "<<turn<<endl;
 		//cerr<<"turhin: "<<turn<<endl;
 		vector<State*> children(Moves.size());
 //		cerr<<"MoveSize: "<<Moves.size()<<endl;
@@ -364,19 +392,50 @@ class State{
 		 	
 		 	//Move and Utility
 //			cerr<<"Utility of "<<i<<"th move is "<<children[i]->utility()<<endl;
-//			printMove(Moves[i]);
+//			printMove(i);
 			//printBoard();
 		//	cerr<<"-------------------------------------------"<<endl;
 		}
 		return children;
 	}
 
-	void selectMove(int i){	//gives INDEX of what move to play
-		moveToPlay=i;
-	}
+//	void selectMove(int i){	//gives INDEX of what move to play
+//		moveToPlay=i;
+//	}
+	
+	
 };
 
 /*--------------------------------------------------END Class Def; BEGIN MINIMAX--------------------------------------------------*/
+
+//Learning
+void learn(int o , int n){
+	int loss = n-o;
+	int delta = RATE*loss;
+	delta/=8;
+	if(PLAYER_ID==1)
+		delta=-delta;
+		
+	l_townhall_w+=delta;
+	l_townhall_b-=delta;
+	l_soldier_w	+=delta;
+	l_soldier_b	-=delta;
+	
+	l_ScountW	+=delta;
+	l_ScountB	-=delta;
+	l_TcountW	+=delta;
+	l_TcountB	-=delta;
+	
+	cerr<<"int l_townhall_w = "<<l_townhall_w<<";"<<endl;
+	cerr<<"int l_townhall_b = "<<l_townhall_b<<";"<<endl;
+	cerr<<"int l_soldier_w =  "<<l_soldier_w<<";"<<endl;
+	cerr<<"int l_soldier_b = "<<l_soldier_b<<";"<<endl;
+
+	cerr<<"int l_ScountW: "<<l_ScountW<<";"<<endl;
+	cerr<<"int l_ScountB: "<<l_ScountB<<";"<<endl;	
+	cerr<<"int l_TcountW: "<<l_TcountW<<";"<<endl;
+	cerr<<"int l_TcountB: "<<l_TcountB<<";"<<endl;
+}
 
 
 /*--Function Prototypes--*/
@@ -387,19 +446,24 @@ int MaxVal(State *state,int alpha,int beta,int depth);
 
 //returns an index for best action // depth =0 means random player
 int MiniMax(State *state, int depth){
-
+	
 	int max_value=0;
 	int max_index=0;
 	int v;
+	int alpha = INT8_MIN;
+	int beta = INT8_MAX;
+	
 	//cerr<<"IN MINMAX\n";
 	vector<State*> children = state->Successors(PLAYER_ID);	//own moves
 
 	//set depth based on number of moves
-
-//	if(children.size()>50) depth = 2;
-//	else if(children.size()>10) depth = 4;
-//	if(children.size()<=10) depth = 5;
-//	if(children.size()<3)  depth = 6;
+	if(DYNAMIC_DEPTH){
+		if(children.size()>30) depth = 3;
+		else if(children.size()>10) depth = 4;
+		if(children.size()<=10) depth = 5;
+		if(children.size()<3)  depth = 6;
+	}
+	cerr<<"Depth: "<<depth<<endl;
 
 	if(depth <=0){	//Random Player
 		srand(time(NULL));
@@ -407,12 +471,20 @@ int MiniMax(State *state, int depth){
 	}
 
 	max_value = MinVal(children[0],INT8_MIN,INT8_MAX,depth-1);	//put first value in max_value
+	//sort according to utility	 for better pruning
+	
 	
 //	cerr<<"Max Initial"<<max_value<<" Index: "<<max_index<<"Utility: "<<children[0]->utility()<<endl;
 //	children[0]->printBoard();
 
 	for(int i=1;i<children.size();i++){
+		
 		v=MinVal(children[i],INT8_MIN,INT8_MAX,depth-1);
+
+//		v=MinVal(children[i],alpha,beta,depth-1);		
+//		alpha = max(alpha,v);
+//		if (alpha>=beta)
+//			return child;
 		
 //		cerr<<"Trying value "<<v<<" Index: "<<i<<"\n Utility: "<<children[i]->utility()<<"\n "<<endl;
 //		children[i]->printBoard();
@@ -428,9 +500,13 @@ int MiniMax(State *state, int depth){
 	}
 	
 	//## Can Update weights here
-//	cerr<<"Max update"<<max_value<<" Index: "<<max_index<<"Utility: "<<children[max]->utility()<<endl;/
-//	chidlren[max_index]->printBoard();
-
+//	cerr<<"Max update "<<max_value<<" Index: "<<max_index<<"Utility: "<<children[max]->utility()<<endl;
+//	state->printMove(max_index);
+//	cerr<<"Uitlity: "<<children[max_index]->utility()<<endl;
+//	children[max_index]->printBoard();
+	//Learning
+	if(LEARN)
+		learn(state->utility(),max_value);
 	return max_index;
 }
 

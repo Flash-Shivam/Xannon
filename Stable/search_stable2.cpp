@@ -14,10 +14,9 @@ using namespace std;
 
 //--Manual Options and Developer Options
 int RED =1;	//Developer Option: check by reducing number of branches
+bool DYNAMIC_DEPTH = false;	//Depth static or Dynamic
 bool LEARN = false;			//learn mode
-bool DYNAMIC_DEPTH = true;	//Depth static or Dynamic
-bool SORT = true;			//sort for better pruning
-bool CLEAN = true;			//clean for utility calculation?
+bool SORT = false;
 int DEPTH=3;
 
 //vector<vector<int> > RealBoard;
@@ -323,17 +322,16 @@ class State{
 		clean(Moves);		//remove repetitive bomb shots/
 	}
 	
-	//Secondary method to get validMoves for utility calculation
+	//Secondary method to get validMoves
 	 vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > validMovesR(int turn){
 		vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > Moves= getValidMoves(board,3-turn);	//in player.cpp
 		//removeBlank();	//remove blank cannon shots
-		if(CLEAN)
-			clean(Moves);		//remove repetitive bomb shots/
+		clean(Moves);		//remove repetitive bomb shots/
 		return Moves;
 	}
 	
 	//removes duplicate cannon shot moves and ARRANGES bomb shots before
-	void clean(vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > &Moves){
+	void clean(vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > Moves){
 		for(int i=0;i<Moves.size();i++){
 			if(get<0>(Moves[i])=='M')
 				continue;
@@ -478,10 +476,10 @@ int MiniMax(State *state, int depth){
 	cerr<<"Bra Fac: "<<children.size()<<endl;
 	if(DYNAMIC_DEPTH){
 		if(children.size()>30) depth = 3;
-		else if(children.size()>20) depth = 5;
-		else if(children.size()>10) depth = 6;
-		if(children.size()<=10) depth = 7;
-		if(children.size()<3)  depth = 8;
+		else if(children.size()>20) depth = 4;
+		else if(children.size()>10) depth = 5;
+		if(children.size()<=10) depth = 6;
+		if(children.size()<3)  depth = 7;
 	}
 	
 	cerr<<"Depth: ";//<<depth<<endl;
@@ -511,7 +509,7 @@ int MiniMax(State *state, int depth){
 //			max_index=i;
 //		}
 		
-//		cerr<<"Trying value "<<v<<" Index: "<<i<<"\n "<<endl;
+		cerr<<"Trying value "<<v<<" Index: "<<i<<"\n "<<endl;
 //		children[i]->printBoard();
 //		cerr<<"v: "<<v<<endl;
 //		
