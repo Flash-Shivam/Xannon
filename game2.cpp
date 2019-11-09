@@ -36,17 +36,17 @@ int main(){
 
 	tuple <char,pair <lld,lld>,pair <lld,lld > >  moveToPlay = st->play();
 
-  if(prev_x == get<2>(moveToPlay).first && prev_y == get<2>(moveToPlay).second && move_type == get<0>(moveToPlay) )
-  {
-    vector < tuple <char,pair <lld,lld>,pair <lld,lld > > >  every_move = all_valid_moves_on_board(curr_posA,curr_posB,soldierB,soldierA,townhallsB,townhallsA,2);
-    srand(time(0));
-    // int flag = 0;
-    lld len = every_move.size();
-    int random = rand()%len;
+//   if(prev_x == get<2>(moveToPlay).first && prev_y == get<2>(moveToPlay).second && move_type == get<0>(moveToPlay) )
+//   {
+//     vector < tuple <char,pair <lld,lld>,pair <lld,lld > > >  every_move = all_valid_moves_on_board(curr_posA,curr_posB,soldierB,soldierA,townhallsB,townhallsA,2);
+//     srand(time(0));
+//     // int flag = 0;
+//     lld len = every_move.size();
+//     int random = rand()%len;
 
-    moveToPlay = every_move[random];
+//     moveToPlay = every_move[random];
 
-  }
+//   }
 
 /*------------*/
     // k is the index of the soldier selected ;
