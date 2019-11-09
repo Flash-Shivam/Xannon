@@ -1,6 +1,17 @@
-// put sort inside minmax for sorting for better pruning
-// clean was erroneuos also sorts a bit can put sort there
-//Introduce sort at lower levels then instead of calling utility function directly see value of 'score'
+/*Ideas
+	1. GAME: Improve Endgame Heuristics (If less stealth attack)
+	2. GAME: Similar to above, Try adding heuristics for stealth attack
+	
+	3. TIME: Instead of calling Function directly see value of 'score'
+	4. TIME: Introduce sort at lower levels then instead of calling utility(after introduction of (3)
+	
+	5. GAME: Stangnant Game?
+	6. TEST: Match with TA Bots
+	
+	7. TIME: MutliThreading calculate best move for every next opponent move then play
+	8. GAME: Better huristic and evaluation functions
+	9. LEARN: Update weights after computation of utility form lower depths
+*/
 
 #include <iostream>
 #include <vector>
@@ -14,9 +25,10 @@ using namespace std;
 
 //--Manual Options and Developer Options
 int RED =1;	//Developer Option: check by reducing number of branches
-bool DYNAMIC_DEPTH = false;	//Depth static or Dynamic
 bool LEARN = false;			//learn mode
-bool SORT = false;
+bool DYNAMIC_DEPTH = true;	//Depth static or Dynamic
+bool SORT = true;			//sort for better pruning
+bool CLEAN = true;			//clean for utility calculation?
 int DEPTH=3;
 
 //vector<vector<int> > RealBoard;
@@ -59,14 +71,6 @@ int l_ScountB 	 =613;		//10
 	| 🔳🔲🔳🔲🔳🔲🔳🔲
 	| 🔳🔲🔳🔲🔳🔲🔳🔲
 	V 🔳🔲🔳🔲🔳🔲🔳🔲
-*/
-/*Ideas
-	MutliThreading calculate best move for every next opponent move then play
-	Better huristic and evaluation functions
-	Better ordering for better pruning
-	more depth
-	Check out TA bots
-	Update weights after computation of utility form lowe depths
 */
 
 
@@ -322,16 +326,17 @@ class State{
 		clean(Moves);		//remove repetitive bomb shots/
 	}
 	
-	//Secondary method to get validMoves
+	//Secondary method to get validMoves for utility calculation
 	 vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > validMovesR(int turn){
 		vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > Moves= getValidMoves(board,3-turn);	//in player.cpp
 		//removeBlank();	//remove blank cannon shots
-		clean(Moves);		//remove repetitive bomb shots/
+		if(CLEAN)
+			clean(Moves);		//remove repetitive bomb shots/
 		return Moves;
 	}
 	
 	//removes duplicate cannon shot moves and ARRANGES bomb shots before
-	void clean(vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > Moves){
+	void clean(vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > &Moves){
 		for(int i=0;i<Moves.size();i++){
 			if(get<0>(Moves[i])=='M')
 				continue;
@@ -509,7 +514,7 @@ int MiniMax(State *state, int depth){
 //			max_index=i;
 //		}
 		
-		cerr<<"Trying value "<<v<<" Index: "<<i<<"\n "<<endl;
+//		cerr<<"Trying value "<<v<<" Index: "<<i<<"\n "<<endl;
 //		children[i]->printBoard();
 //		cerr<<"v: "<<v<<endl;
 //		
