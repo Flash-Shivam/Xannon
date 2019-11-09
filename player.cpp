@@ -440,7 +440,7 @@ vector <pair <lld,lld> > is_Cannon_formed(lld player_number,lld soldier_selected
 
 
 
-          if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-3,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+          if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-3,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
             pair <lld,lld> xx ;
             xx.first = j;
@@ -714,7 +714,7 @@ if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,cur
         xx.second = q;
         can_be_killed.push_back(xx);
       }
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+2,y+2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+2,y-2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -1232,7 +1232,7 @@ if(soldierB[soldier_selected]==1){
                   xx.second = q;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+2,y+2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+2,y-2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = a;
