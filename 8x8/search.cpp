@@ -1,5 +1,5 @@
 /*Ideas
-⭐  -1. Still giving INVALID MOVE. 
+⭐  -1. Still giving INVALID MOVE(wrong in game.py). 
 	0. Doesn,t know townhall dead
 	1. GAME: Improve Endgame Heuristics (If less stealth attack)
 	2. GAME: Similar to above, Try adding heuristics for stealth attack
@@ -37,19 +37,23 @@ int ENDGAME = 4;		//4 bansal 5 sondhi ?
 //const int m=8,n=8;
 int PLAYER_ID;		//1 ->black and 2 -> white	: Fixed for a game
 int RATE = 1;		//Learning rate
+int DOWN = 0;		//opponent townhall down?
 
 /*Weights*/
-int w_townhall_w =300;		//200~300
-int w_townhall_b =-300;		//-200~300
-int w_soldier_w  =100;		//90
-int w_soldier_b  =-100;		//-90
+int w_townhall_w =200;		//200~300
+int w_townhall_b =-200;		//-200~300
+int w_soldier_w  =90;		//90
+int w_soldier_b  =-90;		//-90
 int w_cannon_w	 =1;		//1
 int w_cannon_b	 =-1;		//-1
 
-int w_TcountW 	 =-30;		//-10
-int w_TcountB 	 =30;		//10
-int w_ScountW 	 =-30;		//-10
-int w_ScountB 	 =30;		//10
+int w_TcountW 	 =-20;		//-10
+int w_TcountB 	 =20;		//10
+int w_ScountW 	 =-10;		//-10
+int w_ScountB 	 =10;		//10
+
+int w_vicinityW		 =1;		//weight
+int w_vicinityB		 =-1;		// weight
 
 //Learned Values
 int l_townhall_w =923;		//200
@@ -108,6 +112,10 @@ class State{
 	int TcountW =0;
 	int ScountB =0;
 	int ScountW =0;
+	
+	//Vicinity Count
+	int vicinityB =0;
+	int vicinityW =0;
 
 	/*--END Statistics for evaluation function*/
 	
@@ -135,7 +143,7 @@ class State{
 	//Think how to layout the board and different sides in numbers##
 	//writing code based on enemy -ve and black mostly
 
-	//townhall and soldier count
+	//townhall and soldier count and vicinity count
 	void setBasicCount(){
 	
 	//set to zero
@@ -146,8 +154,14 @@ class State{
 
 		for(int i=0;i<n;i++){
 			for(int j=0;j<m;j++){
-				if(board[i][j]==1)			soldier_w++;
-				else if(board[i][j]==-1)	soldier_b++;
+				if(board[i][j]==1){
+					soldier_w++;
+					vicinityW+=i;
+				}
+				else if(board[i][j]==-1){
+					soldier_b++;
+					vicinityB+=(n-i);
+				}
 				else if(board[i][j]==2)		townhall_w++;
 				else if(board[i][j]==-2)	townhall_b++;
 			}
@@ -271,17 +285,20 @@ class State{
 	//townhalls under attack
 	//townhall in attacking range
 	
-	//Sum of coordinates of our soldiers
-	int sum(){
-		int sumJ=0;
-		for(int i=0;i<n;i++){
-			for(int j=0;j<m;j++){
-				if(board[i][j]==1)
-					sumJ+=i;
-			}
-		}
-		return sumJ;
-	}
+	//Closeness from enemy(Black) townhalls
+//	void setVicinity(){			
+//		int sumW=0;
+//		int sumB=0;
+//		for(int i=0;i<n;i++){
+//			for(int j=0;j<m;j++){
+//				if(board[i][j]==1)
+//					vicinityW+=i;		//positive weigth
+//				else if(board[i][j]==-1)
+//					vicinityB+=(n-i);	//-ve weight
+//			}
+//		}
+//		
+//	}
 
 
 
@@ -291,14 +308,15 @@ class State{
 		getCannonCount();
 		blackUnderAttack();
 		whiteUnderAttack();
+		//setVicinity();
 		
 	//⭐END GAME Heuristics⭐//
 		if(soldier_w < ENDGAME &&PLAYER_ID==2){
 //			cerr<<"We are in the ENDGAME now!\n";
 			//when less soldiers then save your soldiers
-			w_soldier_w=120;		//120
+			w_soldier_w=130;		//120
 			//stay out of attacking zones
-			w_ScountW = -60;		//-60
+			w_ScountW = -70;		//-60
 			//Don't Try to attack soldiers
 			w_ScountB = 5;			//-5
 		
@@ -307,9 +325,9 @@ class State{
 		else if(soldier_b < ENDGAME &&PLAYER_ID==1){
 //			cerr<<"We are in the ENDGAME now!\n";
 			//when less soldiers then save your soldiers
-			w_soldier_b=-120;		//-120
+			w_soldier_b=-130;		//-120
 			//stay out of attacking zones
-			w_ScountB = 60;		//60
+			w_ScountB = 70;		//60
 			//Don't Try to attack soldiers
 			w_ScountW = -5;			//-5
 		
@@ -326,10 +344,11 @@ class State{
 		util += (w_ScountW*ScountW		 + w_ScountB*ScountB);
 //		cerr<<"TcountW: "<<TcountW<<" TcountB: "<<TcountB<<endl;
 //		cerr<<"ScountW: "<<ScountW<<" ScountB: "<<ScountB<<endl;
-//		if(util>127)
 //		cerr<<"Util AC: "<<util<<endl;
-		//closeness to other townhalls
-		util += sum();	//to get closeness to other townhalls
+
+		//closeness to other townhalls	
+//		util += (w_vicinityW*vicinityW	+	w_vicinityB*vicinityB);
+		
  		if(PLAYER_ID==1)
  			util = -util;
 		score = util;
@@ -396,6 +415,7 @@ class State{
 
 	void getBoardS(){
 		board=getBoard();	//in player.cpp
+
 	}
 	
 	//Play function: Actually plays the move and updates board
@@ -542,6 +562,8 @@ int MiniMax(State *state, int depth){
 //		}
 		
 		cerr<<"Trying value "<<v<<" Index: "<<i<<"\n "<<endl;
+		state->printMove(children[i]->moveIndex);
+		cerr<<"Uitlity: "<<children[i]->utility()<<endl;
 //		children[i]->printBoard();
 //		cerr<<"v: "<<v<<endl;
 //		
