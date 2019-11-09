@@ -1,9 +1,11 @@
 /*Ideas
+⭐  -1. Still giving INVALID MOVE. 
+	0. Doesn,t know townhall dead
 	1. GAME: Improve Endgame Heuristics (If less stealth attack)
 	2. GAME: Similar to above, Try adding heuristics for stealth attack
-	
-	3. TIME: Instead of calling Function directly see value of 'score'
-	4. TIME: Introduce sort at lower levels then instead of calling utility(after introduction of (3)
+	0. Work on 10x10 rather than samller
+XXX	3. TIME: Instead of calling Function directly see value of 'score'
+XXX	4. TIME: Introduce sort at lower levels then instead of calling utility(after introduction of (3) TOO EXPENSIVE slower
 	
 	5. GAME: Stangnant Game?
 	6. TEST: Match with TA Bots
@@ -30,25 +32,26 @@ bool DYNAMIC_DEPTH = true;	//Depth static or Dynamic
 bool SORT = true;			//sort for better pruning
 bool CLEAN = true;			//clean for utility calculation?
 int DEPTH=3;
-
+int ENDGAME = 4;		//4 bansal 5 sondhi ?
 //vector<vector<int> > RealBoard;
 //const int m=8,n=8;
 int PLAYER_ID;		//1 ->black and 2 -> white	: Fixed for a game
 int RATE = 1;		//Learning rate
 
 /*Weights*/
-int w_townhall_w =300;		//200
-int w_townhall_b =-300;		//-200
-int w_soldier_w  =90;		//90
-int w_soldier_b  =-90;		//-90
+int w_townhall_w =300;		//200~300
+int w_townhall_b =-300;		//-200~300
+int w_soldier_w  =100;		//90
+int w_soldier_b  =-100;		//-90
 int w_cannon_w	 =1;		//1
 int w_cannon_b	 =-1;		//-1
 
-int w_TcountW 	 =-10;		//-10
-int w_TcountB 	 =10;		//10
-int w_ScountW 	 =-10;		//-10
-int w_ScountB 	 =10;		//10
+int w_TcountW 	 =-30;		//-10
+int w_TcountB 	 =30;		//10
+int w_ScountW 	 =-30;		//-10
+int w_ScountB 	 =30;		//10
 
+//Learned Values
 int l_townhall_w =923;		//200
 int l_townhall_b =-923;		//-200
 int l_soldier_w  =713;		//90
@@ -267,6 +270,7 @@ class State{
 	//under attack form cannons
 	//townhalls under attack
 	//townhall in attacking range
+	
 	//Sum of coordinates of our soldiers
 	int sum(){
 		int sumJ=0;
@@ -288,6 +292,29 @@ class State{
 		blackUnderAttack();
 		whiteUnderAttack();
 		
+	//⭐END GAME Heuristics⭐//
+		if(soldier_w < ENDGAME &&PLAYER_ID==2){
+//			cerr<<"We are in the ENDGAME now!\n";
+			//when less soldiers then save your soldiers
+			w_soldier_w=120;		//120
+			//stay out of attacking zones
+			w_ScountW = -60;		//-60
+			//Don't Try to attack soldiers
+			w_ScountB = 5;			//-5
+		
+		}
+		
+		else if(soldier_b < ENDGAME &&PLAYER_ID==1){
+//			cerr<<"We are in the ENDGAME now!\n";
+			//when less soldiers then save your soldiers
+			w_soldier_b=-120;		//-120
+			//stay out of attacking zones
+			w_ScountB = 60;		//60
+			//Don't Try to attack soldiers
+			w_ScountW = -5;			//-5
+		
+		}
+	//END ENDGAME Heuristics//
 
 		util += (w_townhall_w*townhall_w + w_townhall_b*townhall_b);
 //		cerr<<"Util TC: "<<util<<endl;
@@ -302,7 +329,7 @@ class State{
 //		if(util>127)
 //		cerr<<"Util AC: "<<util<<endl;
 		//closeness to other townhalls
-	//	util += sum()/10;	//to get closeness to other townhalls
+		util += sum();	//to get closeness to other townhalls
  		if(PLAYER_ID==1)
  			util = -util;
 		score = util;
@@ -471,20 +498,20 @@ int MiniMax(State *state, int depth){
 	int alpha = INT_MIN;
 	int beta = INT_MAX;
 	
-	//cerr<<"IN MINMAX\n";
+
 	vector<State*> children = state->Successors(PLAYER_ID);	//own moves
 	//Sort according to utility for better pruning
 	if(SORT)
 		sort(children.begin(),children.end(),compareStates);
 
 	//set depth based on number of moves
-	cerr<<"Bra Fac: "<<children.size()<<endl;
+	cerr<<"\nBra Fac: "<<children.size()<<endl;
 	if(DYNAMIC_DEPTH){
 		if(children.size()>30) depth = 3;
 		else if(children.size()>20) depth = 4;
 		else if(children.size()>10) depth = 5;
 		if(children.size()<=10) depth = 6;
-		if(children.size()<3)  depth = 7;
+		if(children.size()<3)  depth = 7;	//8 is too much
 	}
 	
 	cerr<<"Depth: ";//<<depth<<endl;
@@ -514,7 +541,7 @@ int MiniMax(State *state, int depth){
 //			max_index=i;
 //		}
 		
-//		cerr<<"Trying value "<<v<<" Index: "<<i<<"\n "<<endl;
+		cerr<<"Trying value "<<v<<" Index: "<<i<<"\n "<<endl;
 //		children[i]->printBoard();
 //		cerr<<"v: "<<v<<endl;
 //		
@@ -558,9 +585,10 @@ int MinVal(State *state,int alpha,int beta,int depth){
 
 	if(children.size()<=0)	//NO Moves left for opponent
 		return state->utility();
-	//sort in reverse order for best pruning
-//	Sort(children);
-//	reverse(children.begin(),children.end());
+		
+	//Ordering? | Sort etc. Expensive
+//	sort(children.begin(),children.end(),compareStates);
+//	reverse(children);
 
 	for (int i=0;i<children.size();i++){
 		child = MaxVal(children[i],alpha,beta,depth-1);
@@ -588,8 +616,9 @@ int MaxVal(State *state, int alpha, int beta,int depth){
 	
 	if(children.size()<=0)	//NO Moves left
 		return state->utility();
-	//sort in for best pruning
-//	Sort(children);
+		
+	//Ordering? | Sort etc. Expensive
+//	sort(children.begin(),children.end(),compareStates);
 	
 	for (int i=0;i<children.size();i++){
 		child = MinVal(children[i],alpha,beta,depth-1);
