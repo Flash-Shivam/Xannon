@@ -6,15 +6,21 @@ using namespace std;
 
 int main(){
 
-  int m,n,player_id,time;	//for input
+  int m,n,player_id,timee;	//for input
 	//int turn;	//0 or 1
-  cin >> player_id >> m >> n >> time;	//first line input##s
+  cin >> player_id >> m >> n >> timee;	//first line input##s
+  cerr << m << " " << n << endl;
   //player_id=1;m=8;n=8;time=90;
 	PLAYER_ID = player_id;
   char a,b;
   lld x,y,p,q,i,j,k;
-
+  int prev_x,prev_y;
+  prev_x = -1;
+  prev_y = -1;
+  char move_type = 'B';
+  //cerr << " Ready for intialization\n";
   intialize_board();
+  //cerr << "BOard Intiaized\n";
   State *st = new State(Board);
 //  st->getBoardS();
 
@@ -22,15 +28,34 @@ int main(){
   //BLACK
   while(1){
 
-/*---SEARCH---*/
-//	printBoard()
+/*SEARCH*/
   	st->getBoardS();
     int MyMove = MiniMax(st,DEPTH);
-//	st->selectMove(MyMove);	//select move given by minimax
+
+	// st->selectMove(MyMove);	//select move given by minimax
+
 	tuple <char,pair <lld,lld>,pair <lld,lld > >  moveToPlay = st->play(MyMove);
 
-/*------------*/
+  // if(prev_x == get<2>(moveToPlay).first && prev_y == get<2>(moveToPlay).second && move_type == get<0>(moveToPlay) )
+  // {
+  //   vector < tuple <char,pair <lld,lld>,pair <lld,lld > > >  every_move = all_valid_moves_on_board(curr_posA,curr_posB,soldierB,soldierA,townhallsB,townhallsA,2);
+  //   srand(time(0));
+  //   // int flag = 0;
+  //   lld len = every_move.size();
+  //   int random = rand()%len;
+  //   int pivot = 0;
+  //   moveToPlay = every_move[random];
+  //   while(check_kills_ownplayer(get<2>(moveToPlay).first,get<2>(moveToPlay).second,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+  //   {
+  //     random = (pivot + rand())%len;
+  //     moveToPlay = every_move[random];
+  //     cerr << "Checking  "  << random << endl;
+  //     pivot = (pivot + 1)%len;
+  //   }
+  //
+  // }
 
+/*------------*/
     // k is the index of the soldier selected ;
      // here 1 is the player number.
     // cuurent location of the selected player
@@ -41,12 +66,10 @@ int main(){
   /*  cout << "S " <<  << " " << x << " " << y << " B " << p << " " << q  ;
       Depends on the search what to select p,q and type of move ;
     cout << "S " <<  << " " << x << " " << y << " M " << p << " " << q  ;*/
-    
-    //Before our moveT
-//    cerr<<"Before\n";
-//    st->printBoard(Board);
-//    cerr<<st->utility()<<endl;
-    
+    prev_x = p;
+    prev_y = q;
+    move_type = get<0>(moveToPlay);
+
     bool if_move_soldier; //depends on search part.
     if(get<0>(moveToPlay)=='M')
     {
@@ -68,6 +91,16 @@ int main(){
       }
     }
     k = i;
+
+    // if(p==0&&q==0)
+    // {
+    //   vector <pair <lld,lld>> pytorch = can_player_be_killed(2,k,curr_posA,curr_posB,soldierB,soldierA,townhallsB,townhallsA);
+    //   cerr << k << endl;
+    //   for(int de = 0;de < pytorch.size();de++)
+    //   {
+    //     cerr << pytorch[de].second << "," << pytorch[de].first << endl;
+    //   }
+    // }
 
     if(if_move_soldier){ // if we move the soldier
       Board[x][y] = 0;
@@ -103,7 +136,7 @@ int main(){
           }
         }
 
-        for(i=0;i<5;i++)
+        for(i=0;i<4;i++)
         {
           if(curr_tA[i].first == p && curr_tA[i].second == q && townhallsA[i] == 1)
           {
@@ -114,11 +147,8 @@ int main(){
         }
 
     }
-    //Before oppo moveT
-//    cerr<<"Before opp\n";
-//    st->printBoard(Board);
-//    cerr<<st->utility()<<endl;
-    
+
+
     cin >> a >> y >> x ;	//SHAYAN order reversed
     cin >> b >> q >> p;		//SHAYAN order reversed
 
@@ -265,15 +295,11 @@ else{	//other player first our white
     }
 
 
-/*---SEARCH---*/
-
+/*-------Search-----*/
   	st->getBoardS();
-    int MyMove = MiniMax(st,DEPTH);
-//	st->selectMove(MyMove);	//select move given by minimax
-	tuple <char,pair <lld,lld>,pair <lld,lld > >  moveToPlay = st->play(MyMove);
-
+	// st->selectMove(MiniMax(st,DEPTH));	//select move given by minimax
+	tuple <char,pair <lld,lld>,pair <lld,lld > >  moveToPlay = st->play(MiniMax(st,DEPTH));
 /*------------*/
-
     // k is the index of the soldier selected ;
      // here 1 is the player number.
     // cuurent location of the selected player
@@ -379,3 +405,4 @@ else{	//other player first our white
 
 
 }
+

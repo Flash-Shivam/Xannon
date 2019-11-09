@@ -32,9 +32,7 @@ int main(){
   	st->getBoardS();
     int MyMove = MiniMax(st,DEPTH);
 
-	st->selectMove(MyMove);	//select move given by minimax
-
-	tuple <char,pair <lld,lld>,pair <lld,lld > >  moveToPlay = st->play();
+	tuple <char,pair <lld,lld>,pair <lld,lld > >  moveToPlay = st->play(MyMove);
 
 //   if(prev_x == get<2>(moveToPlay).first && prev_y == get<2>(moveToPlay).second && move_type == get<0>(moveToPlay) )
 //   {
@@ -290,8 +288,9 @@ else{	//other player first our white
 
 /*-------Search-----*/
   	st->getBoardS();
-	st->selectMove(MiniMax(st,DEPTH));	//select move given by minimax
-	tuple <char,pair <lld,lld>,pair <lld,lld > >  moveToPlay = st->play();
+	int MyMove= MiniMax(st,DEPTH);	//select move given by minimax
+	tuple <char,pair <lld,lld>,pair <lld,lld > >  moveToPlay = st->play(MyMove);
+	
 /*------------*/
     // k is the index of the soldier selected ;
      // here 1 is the player number.
