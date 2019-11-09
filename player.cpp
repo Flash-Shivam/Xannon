@@ -1478,8 +1478,7 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
 //  //        cerr << "start\n";
   if(player_number==1){
     if(soldierA[soldier_selected]==1){
-    if(r==0)
-    {
+
           j = curr_posA[soldier_selected].first +1 ;
           k = curr_posA[soldier_selected].second  ;
           p = curr_posA[soldier_selected].second -1;
@@ -1512,8 +1511,8 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
           }
 
 
-    }
-    else{
+          if(r!=0)
+    {
       j = curr_posA[soldier_selected].first - 2 ;
       k = curr_posA[soldier_selected].second  ;
       p = curr_posA[soldier_selected].second -2;
@@ -1551,8 +1550,8 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
   //  //        cerr << r << endl;
     //----
     if(soldierB[soldier_selected]==1){
-    if(r==0)
-    {
+
+
           j = curr_posB[soldier_selected].first -1 ;
           k = curr_posB[soldier_selected].second  ;
           p = curr_posB[soldier_selected].second -1;
@@ -1585,8 +1584,8 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
           }
 
 
-    }
-    else{
+          if(r!=0)
+    {
       j = curr_posB[soldier_selected].first + 2 ;
       k = curr_posB[soldier_selected].second  ;
       p = curr_posB[soldier_selected].second -2;
