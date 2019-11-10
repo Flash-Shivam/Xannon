@@ -36,7 +36,7 @@ int ENDGAME = 4;		//4 bansal 5 sondhi ?
 //vector<vector<int> > RealBoard;
 //const int m=8,n=8;
 int PLAYER_ID;		//1 ->black and 2 -> white	: Fixed for a game
-int RATE = 1;		//Learning rate
+//int RATE = 1;		//Learning rate
 int DOWN = 0;		//opponent townhall down?
 
 /*Weights*/
@@ -56,17 +56,17 @@ int w_vicinityW		 =1;		//weight
 int w_vicinityB		 =-1;		// weight
 
 //Learned Values
-int l_townhall_w =923;		//200
-int l_townhall_b =-923;		//-200
-int l_soldier_w  =713;		//90
-int l_soldier_b  =-713;		//-90
-int l_cannon_w	 =1;		//1
-int l_cannon_b	 =-1;		//-1
+//int l_townhall_w =923;		//200
+//int l_townhall_b =-923;		//-200
+//int l_soldier_w  =713;		//90
+//int l_soldier_b  =-713;		//-90
+//int l_cannon_w	 =1;		//1
+//int l_cannon_b	 =-1;		//-1
 
-int l_TcountW 	 =-613;		//-10
-int l_TcountB 	 =613;		//10
-int l_ScountW 	 =-613;		//-10
-int l_ScountB 	 =613;		//10
+//int l_TcountW 	 =-613;		//-10
+//int l_TcountB 	 =613;		//10
+//int l_ScountW 	 =-613;		//-10
+//int l_ScountB 	 =613;		//10
 
 /*
 	  -------(m)------>
@@ -84,11 +84,12 @@ int l_ScountB 	 =613;		//10
 /*----------------------CLASS BEGIN----------------------*/
 class State{
 	int m=8,n=8;				//	2-Black-Negative // 1-White-Positive
-	int score=0;				//	score of board /if no search done then equal to utility
+
 	vector<vector<int> > board;
 	vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > Moves;
 	int moveToPlay =0;
 	public: int moveIndex = 0;
+			int score=0;				//	score of board /if no search done then equal to utility
 //	int whosMoves = 1; 				//	1 get white move and 2 to get black move
 	
 	/*
@@ -284,23 +285,6 @@ class State{
 	//under attack form cannons
 	//townhalls under attack
 	//townhall in attacking range
-	
-	//Closeness from enemy(Black) townhalls
-//	void setVicinity(){			
-//		int sumW=0;
-//		int sumB=0;
-//		for(int i=0;i<n;i++){
-//			for(int j=0;j<m;j++){
-//				if(board[i][j]==1)
-//					vicinityW+=i;		//positive weigth
-//				else if(board[i][j]==-1)
-//					vicinityB+=(n-i);	//-ve weight
-//			}
-//		}
-//		
-//	}
-
-
 
 	public: int utility(){	//high desired for US
 		int util=0;
@@ -346,9 +330,9 @@ class State{
 //		cerr<<"ScountW: "<<ScountW<<" ScountB: "<<ScountB<<endl;
 //		cerr<<"Util AC: "<<util<<endl;
 
-		//closeness to other townhalls	
-//		util += (w_vicinityW*vicinityW	+	w_vicinityB*vicinityB);
-		
+		//closeness to other townhalls
+		util += (w_vicinityW*vicinityW	+	w_vicinityB*vicinityB);
+
  		if(PLAYER_ID==1)
  			util = -util;
 		score = util;
@@ -391,7 +375,6 @@ class State{
 				if(get<0>(Moves[j])=='M')
 					continue;
 				if(get<2>(Moves[i])==get<2>(Moves[j])){	//same target
-	//			 	it= find(Moves.begin(), Moves.end(), 5);
 					swap(Moves[j],Moves[Moves.size()-1]);
 					Moves.pop_back();
 					j--;
@@ -424,22 +407,20 @@ class State{
 		return Moves[moveToPlay];	//update in player.cpp
 	}
 	
-
-	
 	//return all the board positions after one ply
 	vector<State*> Successors(int turn){
 
 		validMoves(turn);
-		//cerr<<"turhin: "<<turn<<endl;
+
 		vector<State*> children(Moves.size());
-//		cerr<<"MoveSize: "<<Moves.size()<<endl;
+
 		for(int i=0;i<Moves.size();i++){
 			children[i] = new State(board);	//#check once: copy constructor working?
 			children[i]->copy(this);//problem in copy
 			//printBoard();
 			children[i]->move(Moves[i],turn);
 			children[i]->moveIndex=i;
-//			cerr<<"a\n";
+
 //		 	children[i]->printBoard();
 		 	
 		 	//Move and Utility
@@ -451,52 +432,47 @@ class State{
 		
 		return children;
 	}
-
-//	void selectMove(int i){	//gives INDEX of what move to play
-//		moveToPlay=i;
-//	}
-	
 	
 };
 
 /*--------------------------------------------------END Class Def; BEGIN MINIMAX--------------------------------------------------*/
 
 //Learning
-void learn(int o , int n){
-	int loss = n-o;
-	int delta = RATE*loss;
-	delta/=8;
-	if(PLAYER_ID==1)
-		delta=-delta;
-		
-	l_townhall_w+=delta;
-	l_townhall_b-=delta;
-	l_soldier_w	+=delta;
-	l_soldier_b	-=delta;
-	
-	l_ScountW	+=delta;
-	l_ScountB	-=delta;
-	l_TcountW	+=delta;
-	l_TcountB	-=delta;
-	
-	cerr<<"int l_townhall_w = "<<l_townhall_w<<";"<<endl;
-	cerr<<"int l_townhall_b = "<<l_townhall_b<<";"<<endl;
-	cerr<<"int l_soldier_w =  "<<l_soldier_w<<";"<<endl;
-	cerr<<"int l_soldier_b = "<<l_soldier_b<<";"<<endl;
+//void learn(int o , int n){
+//	int loss = n-o;
+//	int delta = RATE*loss;
+//	delta/=8;
+//	if(PLAYER_ID==1)
+//		delta=-delta;
+//		
+//	l_townhall_w+=delta;
+//	l_townhall_b-=delta;
+//	l_soldier_w	+=delta;
+//	l_soldier_b	-=delta;
+//	
+//	l_ScountW	+=delta;
+//	l_ScountB	-=delta;
+//	l_TcountW	+=delta;
+//	l_TcountB	-=delta;
+//	
+//	cerr<<"int l_townhall_w = "<<l_townhall_w<<";"<<endl;
+//	cerr<<"int l_townhall_b = "<<l_townhall_b<<";"<<endl;
+//	cerr<<"int l_soldier_w =  "<<l_soldier_w<<";"<<endl;
+//	cerr<<"int l_soldier_b = "<<l_soldier_b<<";"<<endl;
 
-	cerr<<"int l_ScountW: "<<l_ScountW<<";"<<endl;
-	cerr<<"int l_ScountB: "<<l_ScountB<<";"<<endl;	
-	cerr<<"int l_TcountW: "<<l_TcountW<<";"<<endl;
-	cerr<<"int l_TcountB: "<<l_TcountB<<";"<<endl;
-}
+//	cerr<<"int l_ScountW: "<<l_ScountW<<";"<<endl;
+//	cerr<<"int l_ScountB: "<<l_ScountB<<";"<<endl;	
+//	cerr<<"int l_TcountW: "<<l_TcountW<<";"<<endl;
+//	cerr<<"int l_TcountB: "<<l_TcountB<<";"<<endl;
+//}
 
 
 /*---------------Helper Functions---------------*/
 
 // Put higher utility state prior
 bool compareStates(State* left, State* right){
-	int l = left->utility();
-	int r = right->utility();
+	int l = left->score;
+	int r = right->score;
 	return l > r;
 }
 	
@@ -517,15 +493,26 @@ int MiniMax(State *state, int depth){
 	int v;
 	int alpha = INT_MIN;
 	int beta = INT_MAX;
-	
 
+	
 	vector<State*> children = state->Successors(PLAYER_ID);	//own moves
+	int BranchF = children.size();
+	
+	if(BranchF<=0){
+		cerr<<"No Moves to Play!\n";
+		return 0;
+	}
+	
+	//Compute and store utilities of all children for sorting
+	for(int i=0;i<BranchF;i++)
+		int temp=children[i]->utility();
+		
 	//Sort according to utility for better pruning
 	if(SORT)
 		sort(children.begin(),children.end(),compareStates);
-
+	
 	//set depth based on number of moves
-	cerr<<"\nBra Fac: "<<children.size()<<endl;
+	
 	if(DYNAMIC_DEPTH){
 		if(children.size()>30) depth = 3;
 		else if(children.size()>20) depth = 4;
@@ -534,10 +521,8 @@ int MiniMax(State *state, int depth){
 		if(children.size()<3)  depth = 7;	//8 is too much
 	}
 	
-	cerr<<"Depth: ";//<<depth<<endl;
-	for(int i=0;i<depth;i++)
-		cerr<<"# ";
-	cerr<<endl<<endl;
+//	cerr<<"\nBranch Factor: "<<children.size()<<endl;
+//	cerr<<"Depth: "<<depth<<endl;
 
 	if(depth <=0){	//Random Player
 		srand(time(NULL));
@@ -561,9 +546,9 @@ int MiniMax(State *state, int depth){
 //			max_index=i;
 //		}
 		
-		cerr<<"Trying value "<<v<<" Index: "<<i<<"\n "<<endl;
-		state->printMove(children[i]->moveIndex);
-		cerr<<"Uitlity: "<<children[i]->utility()<<endl;
+//		cerr<<"Trying value "<<v<<" Index: "<<i<<"\n "<<endl;
+//		state->printMove(children[i]->moveIndex);
+//		cerr<<"Uitlity: "<<children[i]->utility()<<endl;
 //		children[i]->printBoard();
 //		cerr<<"v: "<<v<<endl;
 //		
@@ -581,15 +566,11 @@ int MiniMax(State *state, int depth){
 
 //	cerr<<"Uitlity: "<<children[max_index]->utility()<<endl;
 //	children[max_index]->printBoard();
-
-	//Learning
-	if(LEARN)
-		learn(state->utility(),max_value);
 		
 		
-	cerr<<"Utility: "<<max_value<<endl;
-	state->printMove(children[max_index]->moveIndex);
-	cerr<<"(Index, Pre): ("<<max_index<<", "<<children[max_index]->moveIndex<<")\n\n";
+//	cerr<<"Utility: "<<max_value<<endl;
+//	state->printMove(children[max_index]->moveIndex);
+//	cerr<<"(Index, Pre): ("<<max_index<<", "<<children[max_index]->moveIndex<<")\n\n";
 	
 	return children[max_index]->moveIndex;
 }
@@ -607,10 +588,6 @@ int MinVal(State *state,int alpha,int beta,int depth){
 
 	if(children.size()<=0)	//NO Moves left for opponent
 		return state->utility();
-		
-	//Ordering? | Sort etc. Expensive
-//	sort(children.begin(),children.end(),compareStates);
-//	reverse(children);
 
 	for (int i=0;i<children.size();i++){
 		child = MaxVal(children[i],alpha,beta,depth-1);
@@ -638,9 +615,6 @@ int MaxVal(State *state, int alpha, int beta,int depth){
 	
 	if(children.size()<=0)	//NO Moves left
 		return state->utility();
-		
-	//Ordering? | Sort etc. Expensive
-//	sort(children.begin(),children.end(),compareStates);
 	
 	for (int i=0;i<children.size();i++){
 		child = MinVal(children[i],alpha,beta,depth-1);

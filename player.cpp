@@ -313,6 +313,48 @@ bool check_kills_ownplayer2(lld x,lld y,lld player_number,pair <lld,lld> curr_po
 
 }
 
+
+bool check_kills_townhall(lld x,lld y,lld player_number,pair <lld,lld> curr_posB[],pair<lld,lld> curr_posA[],lld soldierB[],lld soldierA[],pair <lld,lld> curr_tA[],pair <lld,lld> curr_tB[],lld townhallsA[],lld townhallsB[]){
+  lld i,j,k;
+  if(player_number==1){
+  for(i=0;i<4;i++)
+  {
+    if(curr_tA[i].first == x&& curr_tA[i].second == y && townhallsA[i] ==1)
+    {
+      break;
+    }
+  }
+
+  if(i==4)
+  {
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+else{
+  for(i=0;i<4;i++)
+  {
+    if(curr_tB[i].first == x&& curr_tB[i].second == y && townhallsB[i] ==1)
+    {
+      break;
+    }
+  }
+
+  if(i==4)
+  {
+    return true;
+  }
+  else{
+    return false;
+  }
+
+}
+
+
+}
+
 bool check_kills_ownplayer1(lld x,lld y,lld player_number,pair <lld,lld> curr_posB[],pair<lld,lld> curr_posA[],lld soldierB[],lld soldierA[],pair <lld,lld> curr_tA[],pair <lld,lld> curr_tB[],lld townhallsA[],lld townhallsB[]){
   lld i,j,k;
   if(player_number==1){
@@ -440,7 +482,7 @@ vector <pair <lld,lld> > is_Cannon_formed(lld player_number,lld soldier_selected
 
 
 
-          if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-3,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+          if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-3,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
             pair <lld,lld> xx ;
             xx.first = j;
@@ -714,7 +756,7 @@ if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,cur
         xx.second = q;
         can_be_killed.push_back(xx);
       }
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+2,y+2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+2,y-2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -1232,7 +1274,7 @@ if(soldierB[soldier_selected]==1){
                   xx.second = q;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+2,y+2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+2,y-2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = a;
@@ -1478,8 +1520,7 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
 //  //        cerr << "start\n";
   if(player_number==1){
     if(soldierA[soldier_selected]==1){
-    if(r==0)
-    {
+
           j = curr_posA[soldier_selected].first +1 ;
           k = curr_posA[soldier_selected].second  ;
           p = curr_posA[soldier_selected].second -1;
@@ -1487,6 +1528,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
         //  //        cerr << j << " " << k << " " << p << " " << q << endl;
           if(check_valid_move(j,k)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
+            if(!check_kills_townhall(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            {
+              r=0;
+            }
             pair <lld,lld> xx;
             xx.first = j;
             xx.second = k;
@@ -1496,6 +1541,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
 
           if(check_valid_move(j,p)&&check_kills_ownplayer(j,p,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
+            if(!check_kills_townhall(j,p,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            {
+              r=0;
+            }
             pair <lld,lld> xx;
             xx.first = j;
             xx.second = p;
@@ -1504,6 +1553,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
           }
           if(check_valid_move(j,q)&&check_kills_ownplayer(j,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
+            if(!check_kills_townhall(j,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            {
+              r=0;
+            }
             pair <lld,lld> xx;
             xx.first = j;
             xx.second = q;
@@ -1512,8 +1565,8 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
           }
 
 
-    }
-    else{
+          if(r!=0)
+    {
       j = curr_posA[soldier_selected].first - 2 ;
       k = curr_posA[soldier_selected].second  ;
       p = curr_posA[soldier_selected].second -2;
@@ -1551,8 +1604,8 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
   //  //        cerr << r << endl;
     //----
     if(soldierB[soldier_selected]==1){
-    if(r==0)
-    {
+
+
           j = curr_posB[soldier_selected].first -1 ;
           k = curr_posB[soldier_selected].second  ;
           p = curr_posB[soldier_selected].second -1;
@@ -1560,6 +1613,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
    //       //        cerr << j << " " << k << " " << p << " " << q << " " << check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB) << endl ;
           if(check_valid_move(j,k)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
+            if(!check_kills_townhall(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            {
+              r=0;
+            }
             pair <lld,lld> xx;
             xx.first = j;
             xx.second = k;
@@ -1569,6 +1626,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
 
           if(check_valid_move(j,p)&&check_kills_ownplayer(j,p,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
+            if(!check_kills_townhall(j,p,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            {
+              r=0;
+            }
             pair <lld,lld> xx;
             xx.first = j;
             xx.second = p;
@@ -1577,6 +1638,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
           }
           if(check_valid_move(j,q)&&check_kills_ownplayer(j,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
+            if(!check_kills_townhall(j,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            {
+              r=0;
+            }
             pair <lld,lld> xx;
             xx.first = j;
             xx.second = q;
@@ -1585,8 +1650,8 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
           }
 
 
-    }
-    else{
+          if(r!=0)
+    {
       j = curr_posB[soldier_selected].first + 2 ;
       k = curr_posB[soldier_selected].second  ;
       p = curr_posB[soldier_selected].second -2;
@@ -2186,3 +2251,4 @@ lld cannonattacking(lld player_number,lld soldier_selected,pair <lld,lld> curr_p
     return k;
   }
 }
+

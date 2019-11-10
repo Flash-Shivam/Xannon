@@ -331,7 +331,7 @@ class State{
 //		cerr<<"Util AC: "<<util<<endl;
 
 		//closeness to other townhalls
-//		util += (w_vicinityW*vicinityW	+	w_vicinityB*vicinityB);
+		util += (w_vicinityW*vicinityW	+	w_vicinityB*vicinityB);
 
  		if(PLAYER_ID==1)
  			util = -util;

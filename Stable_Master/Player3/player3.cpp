@@ -6,8 +6,8 @@ using namespace std;
 #define lld int
 
 vector<vector<int> > Board;
-lld soldierA[12],soldierB[12],townhallsA[4],townhallsB[4]; // value is 0 if dead else 1.
-pair <lld,lld> curr_posA[12],curr_posB[12],curr_tA[4],curr_tB[4];  //stores location of the soldiers
+lld soldierA[15],soldierB[15],townhallsA[5],townhallsB[5]; // value is 0 if dead else 1.
+pair <lld,lld> curr_posA[15],curr_posB[15],curr_tA[5],curr_tB[5];  //stores location of the soldiers
 lld p = 0;
 /* Function Prototypes */
 vector <pair <lld,lld> >  cannon_movement(lld player_number,lld soldier_selected,pair <lld,lld> curr_posB[],pair <lld,lld> curr_posA[],lld soldierB[],lld soldierA[]);
@@ -17,18 +17,18 @@ void intialize_board(){
   // cerr << "Inside Function\n";
 	Board.resize(10);
 	for(int i=0;i<10;i++)
-		Board[i].resize(8);
+		Board[i].resize(10);
 
 
     // cerr << "Board Sized\n";
-  for(k=0;k<4;k++)
+  for(k=0;k<5;k++)
   {
 
     townhallsA[k] = 1;
     townhallsB[k] = 1;
   }
 
-  for(k=0;k<12;k++)
+  for(k=0;k<15;k++)
   {
 
     soldierA[k] =1;
@@ -37,7 +37,7 @@ void intialize_board(){
 
   lld x=0,y=0;
 
-  for(i=0;i<8;i++)
+  for(i=0;i<10;i++)
   {
     if(i%2==0)
     {
@@ -56,7 +56,7 @@ void intialize_board(){
 
   for(j=1;j<=2;j++)
   {
-    for(i=0;i<8;i++)
+    for(i=0;i<10;i++)
     {
       if(i%2==1)
       {
@@ -72,7 +72,7 @@ void intialize_board(){
   }
 x=0;
 y=0;
-  for(i=0;i<8;i++)
+  for(i=0;i<10;i++)
   {
     if(i%2==0)
     {
@@ -91,7 +91,7 @@ y=0;
 
   for(j=7;j<=8;j++)
   {
-    for(i=0;i<8;i++)
+    for(i=0;i<10;i++)
     {
       if(i%2==1)
       {
@@ -114,7 +114,7 @@ vector<vector<int> > getBoard(){
 }
 
 int getM(){
-	return 8;
+	return 10;
 }
 int getN(){
 	return 10;
@@ -127,7 +127,7 @@ lld selectSoldier(lld player_number, lld soldierA[],lld soldierB[])
   if(player_number == 1)
   {
     lld i,j,k;
-    for(i=0;i<12;i++)
+    for(i=0;i<15;i++)
     {
         if(soldierA[i]==1)
         {
@@ -146,7 +146,7 @@ lld selectSoldier(lld player_number, lld soldierA[],lld soldierB[])
   else{
 
     lld i,j,k;
-    for(i=0;i<12;i++)
+    for(i=0;i<15;i++)
     {
         if(soldierB[i]==1)
         {
@@ -181,7 +181,7 @@ vector <pair<lld ,lld >> can_player_be_killed(lld player_number,lld soldier_sele
   //  //        cerr << x <<  " " << y << endl;
   //  //        cerr << "Other target coordinates\n";
       lld i,j,k;
-      for(i=0;i<12;i++)
+      for(i=0;i<15;i++)
       {
          if(soldierB[i]==1)
          {
@@ -199,7 +199,7 @@ vector <pair<lld ,lld >> can_player_be_killed(lld player_number,lld soldier_sele
          }
       }
     //  //        cerr <<"Other target townhallB coordinates\n";
-      for(i=0;i<4;i++)
+      for(i=0;i<5;i++)
       {
         if(townhallsB[i]==1){
           pair <lld,lld> xx;
@@ -229,7 +229,7 @@ vector <pair<lld ,lld >> can_player_be_killed(lld player_number,lld soldier_sele
     //        cerr << x <<  " " << y << endl;
   //  //        cerr << "Other target coordinates\n";
       lld i,j,k;
-      for(i=0;i<12;i++)
+      for(i=0;i<15;i++)
       {
          if(soldierA[i]==1)
          {
@@ -248,7 +248,7 @@ vector <pair<lld ,lld >> can_player_be_killed(lld player_number,lld soldier_sele
          }
       }
     //  //        cerr << "Other target townhallA coordinates\n";
-      for(i=0;i<4;i++)
+      for(i=0;i<5;i++)
       {
         if(townhallsA[i]==1){
           pair <lld,lld> xx;
@@ -275,7 +275,7 @@ vector <pair<lld ,lld >> can_player_be_killed(lld player_number,lld soldier_sele
 
 bool check_kills_ownplayer2(lld x,lld y,lld player_number,pair <lld,lld> curr_posB[],pair<lld,lld> curr_posA[],lld soldierB[],lld soldierA[],pair <lld,lld> curr_tA[],pair <lld,lld> curr_tB[],lld townhallsA[],lld townhallsB[]){
   lld i,j=0,k=0;
-  for(i=0;i<12;i++)
+  for(i=0;i<15;i++)
   {
     if(curr_posA[i].first == x&& curr_posA[i].second == y && soldierA[i] ==1)
     {
@@ -283,7 +283,7 @@ bool check_kills_ownplayer2(lld x,lld y,lld player_number,pair <lld,lld> curr_po
     }
   }
 
-  for(i=0;i<12;i++)
+  for(i=0;i<15;i++)
   {
     if(curr_posB[i].first == x&& curr_posB[i].second == y && soldierB[i] ==1)
     {
@@ -291,7 +291,7 @@ bool check_kills_ownplayer2(lld x,lld y,lld player_number,pair <lld,lld> curr_po
     }
   }
 
-  for(i=0;i<4;i++)
+  for(i=0;i<5;i++)
   {
     if(curr_tA[i].first == x&& curr_tA[i].second == y && townhallsA[i] ==1)
     {
@@ -299,7 +299,7 @@ bool check_kills_ownplayer2(lld x,lld y,lld player_number,pair <lld,lld> curr_po
     }
   }
 
-  for(i=0;i<4;i++)
+  for(i=0;i<5;i++)
   {
     if(curr_tB[i].first == x&& curr_tB[i].second == y && townhallsB[i] ==1)
     {
@@ -316,18 +316,18 @@ bool check_kills_ownplayer2(lld x,lld y,lld player_number,pair <lld,lld> curr_po
 
 }
 
-bool check_kills_ownplayer1(lld x,lld y,lld player_number,pair <lld,lld> curr_posB[],pair<lld,lld> curr_posA[],lld soldierB[],lld soldierA[],pair <lld,lld> curr_tA[],pair <lld,lld> curr_tB[],lld townhallsA[],lld townhallsB[]){
+bool check_kills_townhall(lld x,lld y,lld player_number,pair <lld,lld> curr_posB[],pair<lld,lld> curr_posA[],lld soldierB[],lld soldierA[],pair <lld,lld> curr_tA[],pair <lld,lld> curr_tB[],lld townhallsA[],lld townhallsB[]){
   lld i,j,k;
   if(player_number==1){
-  for(i=0;i<12;i++)
+  for(i=0;i<5;i++)
   {
-    if(curr_posA[i].first == x&& curr_posA[i].second == y && soldierA[i] ==1)
+    if(curr_tA[i].first == x&& curr_tA[i].second == y && townhallsA[i] ==1)
     {
       break;
     }
   }
 
-  if(i==12)
+  if(i==5)
   {
     return true;
   }
@@ -336,7 +336,49 @@ bool check_kills_ownplayer1(lld x,lld y,lld player_number,pair <lld,lld> curr_po
   }
 }
 else{
-  for(i=0;i<12;i++)
+  for(i=0;i<5;i++)
+  {
+    if(curr_tB[i].first == x&& curr_tB[i].second == y && townhallsB[i] ==1)
+    {
+      break;
+    }
+  }
+
+  if(i==5)
+  {
+    return true;
+  }
+  else{
+    return false;
+  }
+
+}
+
+
+}
+
+
+bool check_kills_ownplayer1(lld x,lld y,lld player_number,pair <lld,lld> curr_posB[],pair<lld,lld> curr_posA[],lld soldierB[],lld soldierA[],pair <lld,lld> curr_tA[],pair <lld,lld> curr_tB[],lld townhallsA[],lld townhallsB[]){
+  lld i,j,k;
+  if(player_number==1){
+  for(i=0;i<15;i++)
+  {
+    if(curr_posA[i].first == x&& curr_posA[i].second == y && soldierA[i] ==1)
+    {
+      break;
+    }
+  }
+
+  if(i==15)
+  {
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+else{
+  for(i=0;i<15;i++)
   {
     if(curr_posB[i].first == x&& curr_posB[i].second == y && soldierB[i] ==1)
     {
@@ -344,7 +386,7 @@ else{
     }
   }
 
-  if(i==12)
+  if(i==15)
   {
     return true;
   }
@@ -362,7 +404,7 @@ bool check_kills_ownplayer(lld x,lld y,lld player_number,pair <lld,lld> curr_pos
 {
   lld i,j,k;
   if(player_number==1){
-  for(i=0;i<12;i++)
+  for(i=0;i<15;i++)
   {
     if(curr_posA[i].first == x&& curr_posA[i].second == y && soldierA[i] ==1)
     {
@@ -370,16 +412,16 @@ bool check_kills_ownplayer(lld x,lld y,lld player_number,pair <lld,lld> curr_pos
     }
   }
 
-  if(i==12)
+  if(i==15)
   {
-    for(j=0;j<4;j++)
+    for(j=0;j<5;j++)
     {
       if(curr_tA[j].first == x&& curr_tA[j].second == y && townhallsA[j] ==1)
       {
         break;
       }
     }
-    if(j==4){
+    if(j==5){
       return true;
     }
     return false;
@@ -389,7 +431,7 @@ bool check_kills_ownplayer(lld x,lld y,lld player_number,pair <lld,lld> curr_pos
   }
 }
 else{
-  for(i=0;i<12;i++)
+  for(i=0;i<15;i++)
   {
     if(curr_posB[i].first == x&& curr_posB[i].second == y && soldierB[i] ==1)
     {
@@ -397,16 +439,16 @@ else{
     }
   }
 
-  if(i==12)
+  if(i==15)
   {
-    for(j=0;j<4;j++)
+    for(j=0;j<5;j++)
     {
       if(curr_tB[j].first == x&& curr_tB[j].second == y && townhallsB[j] ==1)
       {
         break;
       }
     }
-    if(j==4){
+    if(j==5){
       return true;
     }
     return false;
@@ -434,7 +476,7 @@ vector <pair <lld,lld> > is_Cannon_formed(lld player_number,lld soldier_selected
     k = y;
     p = x-1;
     q = y;
-    if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+    if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
           j = x-5; k = y;
           p = x-4; q = y;
@@ -443,28 +485,28 @@ vector <pair <lld,lld> > is_Cannon_formed(lld player_number,lld soldier_selected
 
 
 
-          if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-3,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+          if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x-3,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
             pair <lld,lld> xx ;
             xx.first = j;
             xx.second = k;
             can_be_killed.push_back(xx);
           }
-          if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x+1,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+          if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x+1,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
             pair <lld,lld> xx ;
             xx.first = e;
             xx.second = f;
             can_be_killed.push_back(xx);
           }
-          if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x-3,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+          if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x-3,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
             pair <lld,lld> xx ;
             xx.first = p;
             xx.second = q;
             can_be_killed.push_back(xx);
           }
-          if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+1,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+          if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x+1,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
             pair <lld,lld> xx ;
             xx.first = a;
@@ -478,34 +520,34 @@ vector <pair <lld,lld> > is_Cannon_formed(lld player_number,lld soldier_selected
       k = y;
       p = x+1;
       q = y;
-      if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+      if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
             j = x-3; k = y;
             p = x-4; q = y;
             e = x+4; f = y;
             a = x+3; b = y;
-            if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-2,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x-2,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
             {
               pair <lld,lld> xx ;
               xx.first = j;
               xx.second = k;
               can_be_killed.push_back(xx);
             }
-            if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x+2,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x+2,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
             {
               pair <lld,lld> xx ;
               xx.first = e;
               xx.second = f;
               can_be_killed.push_back(xx);
             }
-            if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x-2,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x-2,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
             {
               pair <lld,lld> xx ;
               xx.first = p;
               xx.second = q;
               can_be_killed.push_back(xx);
             }
-            if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+2,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x+2,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
             {
               pair <lld,lld> xx ;
               xx.first = a;
@@ -521,34 +563,34 @@ vector <pair <lld,lld> > is_Cannon_formed(lld player_number,lld soldier_selected
     k = y;
     p = x+1;
     q = y;
-    if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+    if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
           j = x-3; k = y;
           p = x-2; q = y;
           e = x+4; f = y;
           a = x+5; b = y;
-          if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-1,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+          if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x-1,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
             pair <lld,lld> xx ;
             xx.first = j;
             xx.second = k;
             can_be_killed.push_back(xx);
           }
-          if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x+3,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+          if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x+3,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
             pair <lld,lld> xx ;
             xx.first = e;
             xx.second = f;
             can_be_killed.push_back(xx);
           }
-          if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x-1,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+          if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x-1,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
             pair <lld,lld> xx ;
             xx.first = p;
             xx.second = q;
             can_be_killed.push_back(xx);
           }
-          if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+3,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+          if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x+3,y,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
             pair <lld,lld> xx ;
             xx.first = a;
@@ -564,34 +606,34 @@ vector <pair <lld,lld> > is_Cannon_formed(lld player_number,lld soldier_selected
   k = y-1;
   p = x;
   q = y+1;
-  if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+  if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
         j = x; k = y-4;
         p = x; q = y-3;
         e = x; f = y+4;
         a = x; b = y+3;
-        if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x,y-2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+        if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x,y-2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
         {
           pair <lld,lld> xx ;
           xx.first = j;
           xx.second = k;
           can_be_killed.push_back(xx);
         }
-        if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x,y+2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+        if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x,y+2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
         {
           pair <lld,lld> xx ;
           xx.first = e;
           xx.second = f;
           can_be_killed.push_back(xx);
         }
-        if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x,y-2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+        if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x,y-2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
         {
           pair <lld,lld> xx ;
           xx.first = p;
           xx.second = q;
           can_be_killed.push_back(xx);
         }
-        if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x,y+2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+        if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x,y+2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
         {
           pair <lld,lld> xx ;
           xx.first = a;
@@ -606,34 +648,34 @@ j = x;
 k = y-1;
 p = x;
 q = y-2;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
       j = x; k = y-4;
       p = x; q = y-5;
       e = x; f = y+2;
       a = x; b = y+3;
-      if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x,y-3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x,y-3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = j;
         xx.second = k;
         can_be_killed.push_back(xx);
       }
-      if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x,y+1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x,y+1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = e;
         xx.second = f;
         can_be_killed.push_back(xx);
       }
-      if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x,y-3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x,y-3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = p;
         xx.second = q;
         can_be_killed.push_back(xx);
       }
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x,y+1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x,y+1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -648,34 +690,34 @@ j = x;
 k = y+1;
 p = x;
 q = y+2;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
       j = x; k = y-3;
       p = x; q = y-2;
       e = x; f = y+4;
       a = x; b = y+5;
-      if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x,y-1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x,y-1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = j;
         xx.second = k;
         can_be_killed.push_back(xx);
       }
-      if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x,y+3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x,y+3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = e;
         xx.second = f;
         can_be_killed.push_back(xx);
       }
-      if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x,y-1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x,y-1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = p;
         xx.second = q;
         can_be_killed.push_back(xx);
       }
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x,y+3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x,y+3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -690,34 +732,34 @@ j = x-1;
 k = y+1;
 p = x+1;
 q = y-1;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
       j = x-3; k = y+3;
       p = x-4; q = y+4;
       e = x+3; f = y-3;
       a = x+4; b = y-4;
-      if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-2,y+2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x-2,y+2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = j;
         xx.second = k;
         can_be_killed.push_back(xx);
       }
-      if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x+2,y-2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x+2,y-2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = e;
         xx.second = f;
         can_be_killed.push_back(xx);
       }
-      if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x-2,y+2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x-2,y+2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = p;
         xx.second = q;
         can_be_killed.push_back(xx);
       }
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+2,y+2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x+2,y-2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -732,34 +774,34 @@ j = x+1;
 k = y-1;
 p = x+2;
 q = y-2;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
       j = x-3; k = y+3;
       p = x-2; q = y+2;
       e = x+4; f = y-4;
       a = x+5; b = y-5;
-      if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-1,y+1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x-1,y+1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = j;
         xx.second = k;
         can_be_killed.push_back(xx);
       }
-      if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x+3,y-3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x+3,y-3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = e;
         xx.second = f;
         can_be_killed.push_back(xx);
       }
-      if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x-1,y+1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x-1,y+1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = p;
         xx.second = q;
         can_be_killed.push_back(xx);
       }
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+3,y-3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x+3,y-3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -774,34 +816,34 @@ j = x-2;
 k = y+2;
 p = x-1;
 q = y+1;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
       j = x+2; k = y-2;
       p = x+3; q = y-3;
       e = x-4; f = y+4;
       a = x-5; b = y+5;
-      if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x+1,y-1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x+1,y-1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = j;
         xx.second = k;
         can_be_killed.push_back(xx);
       }
-      if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x-3,y+3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x-3,y+3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = e;
         xx.second = f;
         can_be_killed.push_back(xx);
       }
-      if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x+1,y-1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x+1,y-1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = p;
         xx.second = q;
         can_be_killed.push_back(xx);
       }
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x-3,y+3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x-3,y+3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -816,34 +858,34 @@ j = x+1;
 k = y+1;
 p = x+2;
 q = y+2;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
       j = x-2; k = y-2;
       p = x-3; q = y-3;
       e = x+4; f = y+4;
       a = x+5; b = y+5;
-      if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-1,y-1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x-1,y-1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = j;
         xx.second = k;
         can_be_killed.push_back(xx);
       }
-      if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x+3,y+3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x+3,y+3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = e;
         xx.second = f;
         can_be_killed.push_back(xx);
       }
-      if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x-1,y-1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x-1,y-1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = p;
         xx.second = q;
         can_be_killed.push_back(xx);
       }
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+3,y+3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x+3,y+3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -858,34 +900,34 @@ j = x+1;
 k = y+1;
 p = x-1;
 q = y-1;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
       j = x+3; k = y+3;
       p = x+4; q = y+4;
       e = x-3; f = y-3;
       a = x-4; b = y-4;
-      if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x+2,y+2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x+2,y+2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = j;
         xx.second = k;
         can_be_killed.push_back(xx);
       }
-      if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x-2,y-2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x-2,y-2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = e;
         xx.second = f;
         can_be_killed.push_back(xx);
       }
-      if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x+2,y+2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x+2,y+2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = p;
         xx.second = q;
         can_be_killed.push_back(xx);
       }
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x-2,y-2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x-2,y-2,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -900,34 +942,34 @@ j = x-2;
 k = y-2;
 p = x-1;
 q = y-1;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
       j = x-4; k = y-4;
       p = x-5; q = y-5;
       e = x+2; f = y+2;
       a = x+3; b = y+3;
-      if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-3,y-3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x-3,y-3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = j;
         xx.second = k;
         can_be_killed.push_back(xx);
       }
-      if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x+1,y+1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x+1,y+1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = e;
         xx.second = f;
         can_be_killed.push_back(xx);
       }
-      if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x-3,y-3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x-3,y-3,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = p;
         xx.second = q;
         can_be_killed.push_back(xx);
       }
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+1,y+1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x+1,y+1,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -952,7 +994,7 @@ if(soldierB[soldier_selected]==1){
               k = y;
               p = x-1;
               q = y;
-              if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+              if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
                     j = x-5; k = y;
                     p = x-4; q = y;
@@ -961,28 +1003,28 @@ if(soldierB[soldier_selected]==1){
 
 
 
-                    if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-3,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                    if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x-3,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                     {
                       pair <lld,lld> xx ;
                       xx.first = j;
                       xx.second = k;
                       can_be_killed.push_back(xx);
                     }
-                    if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x+1,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                    if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x+1,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                     {
                       pair <lld,lld> xx ;
                       xx.first = e;
                       xx.second = f;
                       can_be_killed.push_back(xx);
                     }
-                    if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x-3,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                    if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x-3,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                     {
                       pair <lld,lld> xx ;
                       xx.first = p;
                       xx.second = q;
                       can_be_killed.push_back(xx);
                     }
-                    if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+1,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                    if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x+1,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                     {
                       pair <lld,lld> xx ;
                       xx.first = a;
@@ -996,34 +1038,34 @@ if(soldierB[soldier_selected]==1){
                 k = y;
                 p = x+1;
                 q = y;
-                if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+                if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
                       j = x-3; k = y;
                       p = x-4; q = y;
                       e = x+4; f = y;
                       a = x+3; b = y;
-                      if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-2,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                      if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x-2,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                       {
                         pair <lld,lld> xx ;
                         xx.first = j;
                         xx.second = k;
                         can_be_killed.push_back(xx);
                       }
-                      if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x+2,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                      if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x+2,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                       {
                         pair <lld,lld> xx ;
                         xx.first = e;
                         xx.second = f;
                         can_be_killed.push_back(xx);
                       }
-                      if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x-2,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                      if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x-2,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                       {
                         pair <lld,lld> xx ;
                         xx.first = p;
                         xx.second = q;
                         can_be_killed.push_back(xx);
                       }
-                      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+2,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x+2,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                       {
                         pair <lld,lld> xx ;
                         xx.first = a;
@@ -1039,34 +1081,34 @@ if(soldierB[soldier_selected]==1){
               k = y;
               p = x+1;
               q = y;
-              if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+              if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
                     j = x-3; k = y;
                     p = x-2; q = y;
                     e = x+4; f = y;
                     a = x+5; b = y;
-                    if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-1,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                    if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x-1,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                     {
                       pair <lld,lld> xx ;
                       xx.first = j;
                       xx.second = k;
                       can_be_killed.push_back(xx);
                     }
-                    if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x+3,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                    if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x+3,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                     {
                       pair <lld,lld> xx ;
                       xx.first = e;
                       xx.second = f;
                       can_be_killed.push_back(xx);
                     }
-                    if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x-1,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                    if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x-1,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                     {
                       pair <lld,lld> xx ;
                       xx.first = p;
                       xx.second = q;
                       can_be_killed.push_back(xx);
                     }
-                    if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+3,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                    if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x+3,y,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                     {
                       pair <lld,lld> xx ;
                       xx.first = a;
@@ -1082,34 +1124,34 @@ if(soldierB[soldier_selected]==1){
             k = y-1;
             p = x;
             q = y+1;
-            if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+            if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
                   j = x; k = y-4;
                   p = x; q = y-3;
                   e = x; f = y+4;
                   a = x; b = y+3;
-                  if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x,y-2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                  if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x,y-2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                   {
                     pair <lld,lld> xx ;
                     xx.first = j;
                     xx.second = k;
                     can_be_killed.push_back(xx);
                   }
-                  if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x,y+2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                  if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x,y+2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                   {
                     pair <lld,lld> xx ;
                     xx.first = e;
                     xx.second = f;
                     can_be_killed.push_back(xx);
                   }
-                  if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x,y-2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                  if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x,y-2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                   {
                     pair <lld,lld> xx ;
                     xx.first = p;
                     xx.second = q;
                     can_be_killed.push_back(xx);
                   }
-                  if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x,y+2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                  if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x,y+2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                   {
                     pair <lld,lld> xx ;
                     xx.first = a;
@@ -1124,34 +1166,34 @@ if(soldierB[soldier_selected]==1){
           k = y-1;
           p = x;
           q = y-2;
-          if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+          if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
                 j = x; k = y-4;
                 p = x; q = y-5;
                 e = x; f = y+2;
                 a = x; b = y+3;
-                if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x,y-3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x,y-3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = j;
                   xx.second = k;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x,y+1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x,y+1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = e;
                   xx.second = f;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x,y-3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x,y-3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = p;
                   xx.second = q;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x,y+1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x,y+1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = a;
@@ -1166,34 +1208,34 @@ if(soldierB[soldier_selected]==1){
           k = y+1;
           p = x;
           q = y+2;
-          if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+          if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
                 j = x; k = y-3;
                 p = x; q = y-2;
                 e = x; f = y+4;
                 a = x; b = y+5;
-                if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x,y-1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x,y-1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = j;
                   xx.second = k;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x,y+3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x,y+3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = e;
                   xx.second = f;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x,y-1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x,y-1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = p;
                   xx.second = q;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x,y+3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x,y+3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = a;
@@ -1208,34 +1250,34 @@ if(soldierB[soldier_selected]==1){
           k = y+1;
           p = x+1;
           q = y-1;
-          if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+          if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
                 j = x-3; k = y+3;
                 p = x-4; q = y+4;
                 e = x+3; f = y-3;
                 a = x+4; b = y-4;
-                if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-2,y+2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x-2,y+2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = j;
                   xx.second = k;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x+2,y-2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x+2,y-2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = e;
                   xx.second = f;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x-2,y+2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x-2,y+2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = p;
                   xx.second = q;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+2,y+2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x+2,y-2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = a;
@@ -1250,34 +1292,34 @@ if(soldierB[soldier_selected]==1){
           k = y-1;
           p = x+2;
           q = y-2;
-          if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+          if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
                 j = x-3; k = y+3;
                 p = x-2; q = y+2;
                 e = x+4; f = y-4;
                 a = x+5; b = y-5;
-                if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-1,y+1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x-1,y+1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = j;
                   xx.second = k;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x+3,y-3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x+3,y-3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = e;
                   xx.second = f;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x-1,y+1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x-1,y+1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = p;
                   xx.second = q;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+3,y-3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x+3,y-3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = a;
@@ -1292,34 +1334,34 @@ if(soldierB[soldier_selected]==1){
           k = y+2;
           p = x-1;
           q = y+1;
-          if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+          if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
                 j = x+2; k = y-2;
                 p = x+3; q = y-3;
                 e = x-4; f = y+4;
                 a = x-5; b = y+5;
-                if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x+1,y-1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x+1,y-1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = j;
                   xx.second = k;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x-3,y+3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x-3,y+3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = e;
                   xx.second = f;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x+1,y-1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x+1,y-1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = p;
                   xx.second = q;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x-3,y+3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x-3,y+3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = a;
@@ -1334,34 +1376,34 @@ if(soldierB[soldier_selected]==1){
           k = y+1;
           p = x+2;
           q = y+2;
-          if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+          if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
                 j = x-2; k = y-2;
                 p = x-3; q = y-3;
                 e = x+4; f = y+4;
                 a = x+5; b = y+5;
-                if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-1,y-1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x-1,y-1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = j;
                   xx.second = k;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x+3,y+3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x+3,y+3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = e;
                   xx.second = f;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x-1,y-1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x-1,y-1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = p;
                   xx.second = q;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+3,y+3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x+3,y+3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = a;
@@ -1376,34 +1418,34 @@ if(soldierB[soldier_selected]==1){
           k = y+1;
           p = x-1;
           q = y-1;
-          if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+          if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
                 j = x+3; k = y+3;
                 p = x+4; q = y+4;
                 e = x-3; f = y-3;
                 a = x-4; b = y-4;
-                if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x+2,y+2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x+2,y+2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = j;
                   xx.second = k;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x-2,y-2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x-2,y-2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = e;
                   xx.second = f;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x+2,y+2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x+2,y+2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = p;
                   xx.second = q;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x-2,y-2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x-2,y-2,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = a;
@@ -1418,34 +1460,34 @@ if(soldierB[soldier_selected]==1){
           k = y-2;
           p = x-1;
           q = y-1;
-          if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+          if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
                 j = x-4; k = y-4;
                 p = x-5; q = y-5;
                 e = x+2; f = y+2;
                 a = x+3; b = y+3;
-                if(0<=j&&j<8&&k<8&&0<=k&&check_kills_ownplayer2(x-3,y-3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=j&&j<10&&k<10&&0<=k&&check_kills_ownplayer2(x-3,y-3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = j;
                   xx.second = k;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=e&&e<8&&f<8&&0<=f&&check_kills_ownplayer2(x+1,y+1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=e&&e<10&&f<10&&0<=f&&check_kills_ownplayer2(x+1,y+1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(e,f,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = e;
                   xx.second = f;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=p&&p<8&&q<8&&0<=q&&check_kills_ownplayer2(x-3,y-3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=p&&p<10&&q<10&&0<=q&&check_kills_ownplayer2(x-3,y-3,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = p;
                   xx.second = q;
                   can_be_killed.push_back(xx);
                 }
-                if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer2(x+1,y+1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+                if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer2(x+1,y+1,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
                 {
                   pair <lld,lld> xx ;
                   xx.first = a;
@@ -1465,7 +1507,7 @@ if(soldierB[soldier_selected]==1){
 // checks whether (x,y) is valid point on the board
 bool check_valid_move(lld x,lld y)
 {
-  if(0<=x&&x<10&&y<8&&0<=y)
+  if(0<=x&&x<10&&y<10&&0<=y)
   {
     return true;
   }
@@ -1562,6 +1604,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
    //       //        cerr << j << " " << k << " " << p << " " << q << " " << check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB) << endl ;
           if(check_valid_move(j,k)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
+            if(!check_kills_townhall(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            {
+              r=0;
+            }
             pair <lld,lld> xx;
             xx.first = j;
             xx.second = k;
@@ -1571,6 +1617,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
 
           if(check_valid_move(j,p)&&check_kills_ownplayer(j,p,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
+            if(!check_kills_townhall(j,p,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            {
+              r=0;
+            }
             pair <lld,lld> xx;
             xx.first = j;
             xx.second = p;
@@ -1579,6 +1629,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
           }
           if(check_valid_move(j,q)&&check_kills_ownplayer(j,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
+            if(!check_kills_townhall(j,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            {
+              r=0;
+            }
             pair <lld,lld> xx;
             xx.first = j;
             xx.second = q;
@@ -1595,6 +1649,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
       q = curr_posB[soldier_selected].second + 2;
       if(check_valid_move(j,k)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
+        if(!check_kills_townhall(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+        {
+          r=0;
+        }
         pair <lld,lld> xx;
         xx.first = j;
         xx.second = k;
@@ -1604,6 +1662,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
 
       if(check_valid_move(j,p)&&check_kills_ownplayer(j,p,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
+        if(!check_kills_townhall(j,p,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+        {
+          r=0;
+        }
         pair <lld,lld> xx;
         xx.first = j;
         xx.second = p;
@@ -1612,6 +1674,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
       }
       if(check_valid_move(j,q)&&check_kills_ownplayer(j,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
+        if(!check_kills_townhall(j,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+        {
+          r=0;
+        }
         pair <lld,lld> xx;
         xx.first = j;
         xx.second = q;
@@ -1635,7 +1701,7 @@ vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > all_valid_moves_on_board(
 //	cerr<<"PLAYER ID IS IN: "<<player_id<<endl;
 	if(player_id==1){
 
-  		for(i=0;i<12;i++){
+  		for(i=0;i<15;i++){
 //        //        cerr << "bombA  moves" << endl;
     		vector <pair <lld,lld> > bomb = is_Cannon_formed(1,i,curr_posB,curr_posA,soldierB,soldierA);
     		for(j=0;j<bomb.size();j++){
@@ -1663,7 +1729,7 @@ vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > all_valid_moves_on_board(
   		}
 	}
 	else{
-  		for(i=0;i<12;i++){
+  		for(i=0;i<15;i++){
 //        //        cerr << "bombB  moves" << endl;
     		vector <pair <lld,lld> > bomb = is_Cannon_formed(2,i,curr_posB,curr_posA,soldierB,soldierA);
     		for(j=0;j<bomb.size();j++){
@@ -1699,8 +1765,8 @@ vector <tuple <char,pair <lld,lld>,pair <lld,lld > > > all_valid_moves_on_board(
 vector < tuple<char,pair <lld,lld>,pair <lld,lld> > > getValidMoves(vector<vector<int> > temp_board,int playID)
 {
   lld i,j,k=0,e=0,q=0,p=0;
-  lld sA[12],sB[12],tA[4],tB[4];
-  pair <lld,lld> cpA[12],cpB[12],cptA[4],cptB[4];
+  lld sA[15],sB[15],tA[5],tB[5];
+  pair <lld,lld> cpA[15],cpB[15],cptA[5],cptB[5];
 
 	for(i=0;i<temp_board.size();i++){
 		for(j=0;j<temp_board[i].size();j++){
@@ -1732,22 +1798,22 @@ vector < tuple<char,pair <lld,lld>,pair <lld,lld> > > getValidMoves(vector<vecto
     	}
 	}
 
-	for(i=q;i<4;i++){
+	for(i=q;i<5;i++){
     	tB[i] = 0;
     	cptB[i].first = -1;
     	cptB[i].second = -1;
   	}
-  	for(i=p;i<4;i++){
+  	for(i=p;i<5;i++){
     	tA[i] = 0;
     	cptA[i].first = -1;
     	cptA[i].second = -1;
   	}
-  	for(i=k;i<12;i++){
+  	for(i=k;i<15;i++){
     	sA[i] =0;
     	cpA[i].first = -1;
     	cpA[i].second = -1;
   	}
-  	for(i=e;i<12;i++){
+  	for(i=e;i<15;i++){
     	sB[i] =0;
     	cpB[i].first = -1;
     	cpB[i].second = -1;
@@ -1822,8 +1888,8 @@ vector <vector <int> > update(vector <vector <int> > temp_board , tuple <char, p
             temp_board[p][q]  = 0;
           }
         }
-//		for(int i=0;i<8;i++){
-//			for(int j=0;j<8;j++)
+//		for(int i=0;i<10;i++){
+//			for(int j=0;j<10;j++)
 //				cerr<<temp_board[i][j]<<" ";
 //			cerr<<endl;
 //		}
@@ -1843,10 +1909,10 @@ vector <pair <lld,lld> >  cannon_movement(lld player_number,lld soldier_selected
     k = y;
     p = x-1;
     q = y;
-    if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+    if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
           a = x-3; b = y;
 
-          if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+          if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
             pair <lld,lld> xx ;
             xx.first = a;
@@ -1861,11 +1927,11 @@ vector <pair <lld,lld> >  cannon_movement(lld player_number,lld soldier_selected
     k = y;
     p = x+1;
     q = y;
-    if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+    if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
 
           a = x+3; b = y;
-          if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+          if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
             pair <lld,lld> xx ;
             xx.first = a;
@@ -1877,11 +1943,11 @@ j = x;
 k = y-1;
 p = x;
 q = y-2;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
 
       a = x; b = y-3;
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -1894,11 +1960,11 @@ j = x;
 k = y+1;
 p = x;
 q = y+2;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
 
       a = x; b = y+3;
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -1914,10 +1980,10 @@ j = x+1;
 k = y-1;
 p = x+2;
 q = y-2;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
       a = x+3; b = y-3;
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -1932,11 +1998,11 @@ j = x-2;
 k = y+2;
 p = x-1;
 q = y+1;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
 
       a = x-3; b = y+3;
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -1951,11 +2017,11 @@ j = x+1;
 k = y+1;
 p = x+2;
 q = y+2;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
 
       a = x+3; b = y+3;
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -1970,11 +2036,11 @@ j = x-2;
 k = y-2;
 p = x-1;
 q = y-1;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
 
       a = x-3; b = y-3;
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -1999,11 +2065,11 @@ j = x-2;
 k = y;
 p = x-1;
 q = y;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
       a = x-3; b = y;
 
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -2018,11 +2084,11 @@ j = x+2;
 k = y;
 p = x+1;
 q = y;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
 
       a = x+3; b = y;
-      if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+      if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
       {
         pair <lld,lld> xx ;
         xx.first = a;
@@ -2040,11 +2106,11 @@ j = x;
 k = y-1;
 p = x;
 q = y-2;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
 
   a = x; b = y-3;
-  if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+  if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
   {
     pair <lld,lld> xx ;
     xx.first = a;
@@ -2059,11 +2125,11 @@ j = x;
 k = y+1;
 p = x;
 q = y+2;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
 
   a = x; b = y+3;
-  if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+  if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
   {
     pair <lld,lld> xx ;
     xx.first = a;
@@ -2079,10 +2145,10 @@ j = x+1;
 k = y-1;
 p = x+2;
 q = y-2;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
   a = x+3; b = y-3;
-  if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+  if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
   {
     pair <lld,lld> xx ;
     xx.first = a;
@@ -2097,11 +2163,11 @@ j = x-2;
 k = y+2;
 p = x-1;
 q = y+1;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
 
   a = x-3; b = y+3;
-  if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+  if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
   {
     pair <lld,lld> xx ;
     xx.first = a;
@@ -2116,11 +2182,11 @@ j = x+1;
 k = y+1;
 p = x+2;
 q = y+2;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
 
   a = x+3; b = y+3;
-  if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+  if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
   {
     pair <lld,lld> xx ;
     xx.first = a;
@@ -2135,11 +2201,11 @@ j = x-2;
 k = y-2;
 p = x-1;
 q = y-1;
-if(0<=j&&j<8&&0<=p&&p<8&&0<=q&&q<8&&k<8&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
+if(0<=j&&j<10&&0<=p&&p<10&&0<=q&&q<10&&k<10&&0<=k&&!check_kills_ownplayer1(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&!check_kills_ownplayer1(p,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)){
 
 
   a = x-3; b = y-3;
-  if(0<=a&&a<8&&b<8&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+  if(0<=a&&a<10&&b<10&&0<=b&&check_kills_ownplayer(a,b,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB)&&check_kills_ownplayer(a,b,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
   {
     pair <lld,lld> xx ;
     xx.first = a;
@@ -2165,7 +2231,7 @@ lld cannonattacking(lld player_number,lld soldier_selected,pair <lld,lld> curr_p
   lld i,j,k=0;
   if(player_number==1){
     vector <pair <lld,lld> > bomb = is_Cannon_formed(1,i,curr_posB,curr_posA,soldierB,soldierA);
-    for(i=0;i<12;i++){
+    for(i=0;i<15;i++){
       for(j=0;j<bomb.size();j++){
         if(bomb[j].first == curr_posA[i].first && bomb[j].second == curr_posA[i].second){
           k++;
@@ -2177,7 +2243,7 @@ lld cannonattacking(lld player_number,lld soldier_selected,pair <lld,lld> curr_p
   }
   else{
     vector <pair <lld,lld> > bomb = is_Cannon_formed(2,i,curr_posB,curr_posA,soldierB,soldierA);
-    for(i=0;i<12;i++){
+    for(i=0;i<15;i++){
       for(j=0;j<bomb.size();j++){
         if(bomb[j].first == curr_posB[i].first && bomb[j].second == curr_posB[i].second){
           k++;
@@ -2188,3 +2254,4 @@ lld cannonattacking(lld player_number,lld soldier_selected,pair <lld,lld> curr_p
     return k;
   }
 }
+
