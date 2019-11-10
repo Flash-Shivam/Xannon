@@ -136,7 +136,7 @@ int main(){
           }
         }
 
-        for(i=0;i<4;i++)
+        for(i=0;i<5;i++)
         {
           if(curr_tA[i].first == p && curr_tA[i].second == q && townhallsA[i] == 1)
           {
@@ -297,8 +297,8 @@ else{	//other player first our white
 
 /*-------Search-----*/
   	st->getBoardS();
-	// st->selectMove(MiniMax(st,DEPTH));	//select move given by minimax
-	tuple <char,pair <lld,lld>,pair <lld,lld > >  moveToPlay = st->play(MiniMax(st,DEPTH));
+	int MyMove = MiniMax(st,DEPTH);	//select move given by minimax
+	tuple <char,pair <lld,lld>,pair <lld,lld > >  moveToPlay = st->play(MyMove);
 /*------------*/
     // k is the index of the soldier selected ;
      // here 1 is the player number.
