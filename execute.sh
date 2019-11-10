@@ -6,9 +6,9 @@
     then
     ./bot
     elif [ $c -eq 10 ]
-    then ./bot2
+    then ./bot3
 	 else 
-		./bot3	
+		./bot2	
     fi
 
 
