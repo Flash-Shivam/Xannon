@@ -297,8 +297,8 @@ else{	//other player first our white
 
 /*-------Search-----*/
   	st->getBoardS();
-	// st->selectMove(MiniMax(st,DEPTH));	//select move given by minimax
-	tuple <char,pair <lld,lld>,pair <lld,lld > >  moveToPlay = st->play(MiniMax(st,DEPTH));
+	int MyMove = MiniMax(st,DEPTH);	//select move given by minimax
+	tuple <char,pair <lld,lld>,pair <lld,lld > >  moveToPlay = st->play(MyMove);
 /*------------*/
     // k is the index of the soldier selected ;
      // here 1 is the player number.
