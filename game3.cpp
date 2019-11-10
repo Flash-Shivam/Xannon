@@ -136,7 +136,7 @@ int main(){
           }
         }
 
-        for(i=0;i<4;i++)
+        for(i=0;i<5;i++)
         {
           if(curr_tA[i].first == p && curr_tA[i].second == q && townhallsA[i] == 1)
           {
