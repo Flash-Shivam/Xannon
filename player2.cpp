@@ -273,6 +273,47 @@ vector <pair<lld ,lld >> can_player_be_killed(lld player_number,lld soldier_sele
 
 }
 
+bool check_kills_townhall(lld x,lld y,lld player_number,pair <lld,lld> curr_posB[],pair<lld,lld> curr_posA[],lld soldierB[],lld soldierA[],pair <lld,lld> curr_tA[],pair <lld,lld> curr_tB[],lld townhallsA[],lld townhallsB[]){
+  lld i,j,k;
+  if(player_number==1){
+  for(i=0;i<4;i++)
+  {
+    if(curr_tA[i].first == x&& curr_tA[i].second == y && townhallsA[i] ==1)
+    {
+      break;
+    }
+  }
+
+  if(i==4)
+  {
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+else{
+  for(i=0;i<4;i++)
+  {
+    if(curr_tB[i].first == x&& curr_tB[i].second == y && townhallsB[i] ==1)
+    {
+      break;
+    }
+  }
+
+  if(i==4)
+  {
+    return true;
+  }
+  else{
+    return false;
+  }
+
+}
+
+
+}
+
 bool check_kills_ownplayer2(lld x,lld y,lld player_number,pair <lld,lld> curr_posB[],pair<lld,lld> curr_posA[],lld soldierB[],lld soldierA[],pair <lld,lld> curr_tA[],pair <lld,lld> curr_tB[],lld townhallsA[],lld townhallsB[]){
   lld i,j=0,k=0;
   for(i=0;i<12;i++)
@@ -1489,6 +1530,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
         //  //        cerr << j << " " << k << " " << p << " " << q << endl;
           if(check_valid_move(j,k)&&check_kills_ownplayer(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
+            if(!check_kills_townhall(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            {
+              r=0;
+            }
             pair <lld,lld> xx;
             xx.first = j;
             xx.second = k;
@@ -1498,6 +1543,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
 
           if(check_valid_move(j,p)&&check_kills_ownplayer(j,p,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
+            if(!check_kills_townhall(j,p,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            {
+              r=0;
+            }
             pair <lld,lld> xx;
             xx.first = j;
             xx.second = p;
@@ -1506,6 +1555,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
           }
           if(check_valid_move(j,q)&&check_kills_ownplayer(j,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
+            if(!check_kills_townhall(j,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            {
+              r=0;
+            }
             pair <lld,lld> xx;
             xx.first = j;
             xx.second = q;
@@ -1562,6 +1615,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
    //       //        cerr << j << " " << k << " " << p << " " << q << " " << check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB) << endl ;
           if(check_valid_move(j,k)&&check_kills_ownplayer(j,k,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
+            if(!check_kills_townhall(j,k,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            {
+              r=0;
+            }
             pair <lld,lld> xx;
             xx.first = j;
             xx.second = k;
@@ -1571,6 +1628,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
 
           if(check_valid_move(j,p)&&check_kills_ownplayer(j,p,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
+            if(!check_kills_townhall(j,p,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            {
+              r=0;
+            }
             pair <lld,lld> xx;
             xx.first = j;
             xx.second = p;
@@ -1579,6 +1640,10 @@ vector <pair <lld,lld>> movesoldier(lld player_number,lld soldier_selected,pair 
           }
           if(check_valid_move(j,q)&&check_kills_ownplayer(j,q,2,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
           {
+            if(!check_kills_townhall(j,q,1,curr_posB,curr_posA,soldierB,soldierA,curr_tA,curr_tB,townhallsA,townhallsB))
+            {
+              r=0;
+            }
             pair <lld,lld> xx;
             xx.first = j;
             xx.second = q;
