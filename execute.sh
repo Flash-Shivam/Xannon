@@ -1,7 +1,7 @@
 
     #!/bin/bash
     # Basic if statement
-    read a b c d 
+    read $a $b $c $d 
     if [ $b -eq 8 ]
     then
     ./bot
