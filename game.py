@@ -13,7 +13,7 @@ from selenium import webdriver
 from jinja2 import Environment, FileSystemLoader
 from selenium.webdriver.chrome.options import Options
 
-display = {8: 600, 10: 750}
+display = {8: 500, 10: 650}
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_ENVIRONMENT = Environment(autoescape = False, loader = FileSystemLoader(os.path.join(PATH, 'templates')), trim_blocks = False)
@@ -295,3 +295,4 @@ class Game:
 if __name__ == "__main__":
 	game = Game(8, 8, 'GUI')
 	game.simulate(sys.argv[1])
+

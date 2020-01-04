@@ -4,11 +4,11 @@
     read a b c d 
     if [ $b -eq 8 ]
     then
-    ./bot
+    ./bot $a $b $c $d
     elif [ $c -eq 10 ]
-    then ./bot3
+    then ./bot3 $a $b $c $d
 	 else 
-		./bot2	
+		./bot2 $a $b $c $d
     fi
 
 

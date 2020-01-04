@@ -1,4 +1,4 @@
-/*Ideas
+/*Ideas333333333
 ⭐  -1. Still giving INVALID MOVE(wrong in game.py). 
 	0. Doesn,t know townhall dead
 	1. GAME: Improve Endgame Heuristics (If less stealth attack)
@@ -21,7 +21,7 @@ XXX	4. TIME: Introduce sort at lower levels then instead of calling utility(afte
 #include <utility>
 #include <string>
 #include <climits>
-#include"player.cpp"
+#include"player3.cpp"
 
 using namespace std;
 
@@ -39,7 +39,6 @@ int PLAYER_ID;		//1 ->black and 2 -> white	: Fixed for a game
 //int RATE = 1;		//Learning rate
 int DOWN = 0;		//opponent townhall down?
 bool LESS = false;
-
 /*Weights*/
 int w_townhall_w =200;		//200~300
 int w_townhall_b =-200;		//-200~300
@@ -332,7 +331,7 @@ class State{
 //		cerr<<"Util AC: "<<util<<endl;
 
 		//closeness to other townhalls
-//		util += (w_vicinityW*vicinityW	+	w_vicinityB*vicinityB);
+		util += (w_vicinityW*vicinityW	+	w_vicinityB*vicinityB)/10;
 
  		if(PLAYER_ID==1)
  			util = -util;
@@ -521,7 +520,6 @@ int MiniMax(State *state, int depth){
 		if(children.size()<=10) depth = 6;
 		if(children.size()<3)  depth = 7;	//8 is too much
 	}
-	
 	
 //	cerr<<"\nBranch Factor: "<<children.size()<<endl;
 //	cerr<<"Depth: "<<depth<<endl;
